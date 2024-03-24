@@ -1,6 +1,7 @@
 from django.db import models
 from django.contrib.auth.models import AbstractBaseUser, PermissionsMixin, BaseUserManager
 from django.utils import timezone
+from marks.models import StudentsUnit
 
 # Create your models here.
 class UserManager(BaseUserManager):
@@ -35,6 +36,7 @@ class User(AbstractBaseUser, PermissionsMixin):
     is_staff = models.BooleanField('имеет доступ к панели', default=False)
     is_active = models.BooleanField('активная учетная запись', default=True)
     date_joined = models.DateTimeField('дата регистрации', default=timezone.now)
+    students_unit = models.ForeignKey(StudentsUnit, on_delete=models.PROTECT, verbose_name='группа/класс', null=True, blank=True, help_text='только для студентов')
 
     USERNAME_FIELD = 'phone'
     EMAIL_FIELD = 'email'
