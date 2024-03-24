@@ -11,6 +11,9 @@ class StudentsUnit(models.Model):
         verbose_name = 'группа/класс'
         verbose_name_plural = 'группы/классы'
 
+    def __str__(self) -> str:
+        return self.name
+
 class Subject(models.Model):
     name = models.CharField('название', max_length=128)
     description = models.TextField('описание', blank=True)
@@ -18,6 +21,9 @@ class Subject(models.Model):
     class Meta:
         verbose_name = 'предмет'
         verbose_name_plural = 'предметы'
+
+    def __str__(self) -> str:
+        return self.name
 
 class Appointment(models.Model):
     students_unit = models.ForeignKey(StudentsUnit, on_delete=models.PROTECT, verbose_name='группа/класс')

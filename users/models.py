@@ -57,3 +57,6 @@ class User(AbstractBaseUser, PermissionsMixin):
 
     def get_short_name(self):
         return self.name
+    
+    def __str__(self) -> str:
+        return self.get_full_name()
