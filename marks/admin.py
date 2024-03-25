@@ -61,7 +61,7 @@ class StudentsUnitAdmin(admin.ModelAdmin):
 @admin.register(Appointment)
 class AppointmentAdmin(admin.ModelAdmin):
     list_display = ['students_unit', 'subject', 'teacher', 'pub_date']
-    list_display_links = ['pub_date']
+    list_display_links = ['students_unit', 'pub_date']
     search_fields = [
         'subject__name', 'students_unit__name', 'teacher__surname', 'teacher__name', 'teacher__patronymic',
     ]

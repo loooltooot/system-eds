@@ -23,8 +23,8 @@ class UserAdmin(DefaultUserAdmin):
         (
             None,
             {
-                "classes": ("wide",),
-                "fields": ("phone", "password1", "password2"),
+                'classes': ('wide',),
+                'fields': ('surname', 'name', 'patronymic', 'groups', 'phone', 'password1', 'password2'),
             },
         ),
     ]
