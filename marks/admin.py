@@ -15,7 +15,7 @@ class MarkAdmin(admin.ModelAdmin):
         'subject__name', 'student__students_unit__name', 'student__surname', 'student__name', 'student__patronymic',
         'teacher__surname', 'teacher__name', 'teacher__patronymic',
     ]
-    ordering = ['pub_date']
+    ordering = ['-pub_date']
 
     @admin.display(description='группа')
     def student_unit(self, obj):
@@ -65,4 +65,4 @@ class AppointmentAdmin(admin.ModelAdmin):
     search_fields = [
         'subject__name', 'students_unit__name', 'teacher__surname', 'teacher__name', 'teacher__patronymic',
     ]
-    ordering = ['pub_date']
+    ordering = ['-pub_date']
