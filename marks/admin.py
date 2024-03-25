@@ -8,6 +8,9 @@ from .models import (
 
 # Register your models here.
 
+admin.AdminSite.site_title = 'Панель администратора Системы ЭДС'
+admin.AdminSite.site_header = 'Система ЭДС'
+
 @admin.register(Mark)
 class MarkAdmin(admin.ModelAdmin):
     list_display = ['value', 'subject', 'teacher', 'student', 'student_unit', 'pub_date']
