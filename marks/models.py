@@ -35,11 +35,14 @@ class Appointment(models.Model):
         verbose_name = 'назначение преподавателя'
         verbose_name_plural = 'назначения преподавателей'
 
+    def __str__(self) -> str:
+        return f'{self.students_unit} {self.subject} {self.teacher}'.strip()
+
 class Mark(models.Model):
     value = models.PositiveSmallIntegerField('оценка')
     subject = models.ForeignKey(Subject, on_delete=models.PROTECT, verbose_name='предмет')
-    teacher = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.PROTECT, related_name='set_marks', verbose_name='выставленные оценки')
-    student = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.PROTECT, related_name='received_marks', verbose_name='полученные оценки')
+    teacher = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.PROTECT, related_name='set_marks', verbose_name='учитель')
+    student = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.PROTECT, related_name='received_marks', verbose_name='студент')
     pub_date = models.DateTimeField('дата оценивания', auto_now_add=True)
 
     class Meta:
@@ -47,4 +50,4 @@ class Mark(models.Model):
         verbose_name_plural = 'оценки'
 
     def __str__(self):
-        return self.value
+        return f'{self.value} ({self.subject}) {self.student}'.strip()

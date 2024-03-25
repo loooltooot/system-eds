@@ -29,6 +29,7 @@ class UserAdmin(DefaultUserAdmin):
         ),
     ]
     list_display = ('surname', 'name', 'patronymic', 'phone', 'email', 'students_unit')
+    list_display_links = ('phone', 'surname',)
     list_filter = ('is_staff', 'is_superuser', 'is_active', 'groups')
     search_fields = ('phone', 'surname', 'name', 'patronymic', 'students_unit')
     ordering = ('surname',)
