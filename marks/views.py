@@ -1,8 +1,8 @@
 from django.views import generic, View
 from django.contrib.auth.mixins import LoginRequiredMixin, PermissionRequiredMixin
-from django.shortcuts import render
+from django.shortcuts import render, get_object_or_404
 
-from .models import Appointment
+from .models import Appointment, StudentsUnit, Subject
 from .mixins import AdminRedirectMixin
 
 # Create your views here.
@@ -21,8 +21,13 @@ class IndexView(LoginRequiredMixin, AdminRedirectMixin, View):
 class AddMarkView(LoginRequiredMixin, PermissionRequiredMixin, AdminRedirectMixin, View):
     permission_required = 'marks.add_mark'
 
-    def get(self, request, *args, **kwargs):
+    def get(self, request, pk, sub_pk, *args, **kwargs):
         template = 'marks/addmark.html'
+        students_unit = get_object_or_404(StudentsUnit, pk=pk)
+        subject = get_object_or_404(Subject, pk=sub_pk)
+        context = {'students_unit': students_unit, 'subject': subject}
+
+        return render(request, template, context)
         
-    def post(self, request, *args, **kwargs):
+    def post(self, request, pk, sub_pk, *args, **kwargs):
         pass

@@ -1,7 +1,5 @@
 from django import template
 
-from marks.models import Mark
-
 register = template.Library()
 
 @register.simple_tag(takes_context=True)

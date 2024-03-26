@@ -1,0 +1,12 @@
+<table>
+    <thead>
+        {% for date in dates %}
+            <th>{{date|date:"d.m"}}</th>
+        {% endfor %}
+    </thead>
+    <tbody>
+        {% for mark in marks %}
+            <td>{{mark.value}}</td>
+        {% endfor %}
+    </tbody>
+</table>

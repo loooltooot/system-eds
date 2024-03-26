@@ -12,7 +12,7 @@
                     {% endif %}
                     <div>
                         <span>группа: </span>
-                        <span>{{appointment.students_unit}}</span>
+                        <a href="{% url "marks:addmark" appointment.students_unit_id appointment.subject_id %}">{{appointment.students_unit}}</a>
                     </div>
                 </div>
             </li>

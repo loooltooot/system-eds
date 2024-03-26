@@ -4,7 +4,9 @@
 {% block body %}
 <header>
     {% block header %}
-    <img src="{% static "marks/b_logo.svg" %}" alt="Система ЭДС">
+    <a href="{% url "marks:index" %}">
+        <img src="{% static "marks/b_logo.svg" %}" alt="Система ЭДС">
+    </a>
     <span>{% version_label %}</span>
     <div>
         <span>{{request.user.get_full_name}}</span>
