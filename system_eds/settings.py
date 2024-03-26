@@ -14,6 +14,7 @@ from os import getenv, path
 from pathlib import Path
 import dotenv
 from django.core.management.utils import get_random_secret_key
+from django.urls import reverse_lazy
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -139,3 +140,5 @@ MEDIA_ROOT = BASE_DIR / 'media'
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 AUTH_USER_MODEL = 'users.User'
+
+LOGIN_URL = reverse_lazy('users:login')

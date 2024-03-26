@@ -1,0 +1,28 @@
+{% extends "marks/dashboard/base.html" %}
+{% load average_mark %}
+
+{% block content %}
+<section>
+    <h2>Твои оценки</h1>
+    <ul>
+        {% for appointment in related_appointments %}
+            <li>
+                <div>
+                    <h3>{{appointment.subject}}</h3>
+                    {% if appointment.subject.description %}
+                        <p>{{appointment.subject.description}}</p>
+                    {% endif %}
+                    <div>
+                        <span>преподаватель: </span>
+                        <span>{{appointment.teacher}}</span>
+                    </div>
+                    <div>
+                        <span>средний балл: </span>
+                        <span>{% average_mark appointment.subject %}</span>
+                    </div>
+                </div>
+            </li>
+        {% endfor %}
+    </ul>
+</section>
+{% endblock content %}
