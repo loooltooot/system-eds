@@ -1,11 +1,11 @@
 {% extends "marks/base.html" %}
-{% load static %}
+{% load static version_label %}
 
 {% block body %}
 <header>
     {% block header %}
     <img src="{% static "marks/b_logo.svg" %}" alt="Система ЭДС">
-    <span>{{t_version}}</span>
+    <span>{% version_label %}</span>
     <div>
         <span>{{request.user.get_full_name}}</span>
         {% if request.user.students_unit %}
