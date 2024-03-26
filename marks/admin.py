@@ -1,6 +1,5 @@
 from django.contrib import admin
 from django.contrib.auth import get_user_model
-from django.http import HttpRequest
 
 from .models import (
     Mark, Subject, StudentsUnit, Appointment
@@ -14,6 +13,7 @@ admin.AdminSite.site_header = 'Система ЭДС'
 @admin.register(Mark)
 class MarkAdmin(admin.ModelAdmin):
     list_display = ['value', 'subject', 'teacher', 'student', 'student_unit', 'pub_date']
+    list_filter = ['pub_date', ('subject', admin.RelatedOnlyFieldListFilter), ('student__students_unit', admin.RelatedOnlyFieldListFilter)]
     search_fields = [
         'subject__name', 'student__students_unit__name', 'student__surname', 'student__name', 'student__patronymic',
         'teacher__surname', 'teacher__name', 'teacher__patronymic',
@@ -65,6 +65,7 @@ class StudentsUnitAdmin(admin.ModelAdmin):
 class AppointmentAdmin(admin.ModelAdmin):
     list_display = ['students_unit', 'subject', 'teacher', 'pub_date']
     list_display_links = ['students_unit', 'pub_date']
+    list_filter = ['pub_date', ('subject', admin.RelatedOnlyFieldListFilter), ('students_unit', admin.RelatedOnlyFieldListFilter)]
     search_fields = [
         'subject__name', 'students_unit__name', 'teacher__surname', 'teacher__name', 'teacher__patronymic',
     ]
