@@ -1,7 +1,19 @@
 {% extends "marks/base.html" %}
+{% load static %}
+
 {% block body %}
 <header>
-    {% block header %}{% endblock header %}
+    {% block header %}
+    <img src="{% static "marks/b_logo.svg" %}" alt="Система ЭДС">
+    <span>{{t_version}}</span>
+    <div>
+        <span>{{request.user.get_full_name}}</span>
+        {% if request.user.students_unit %}
+            <span>{{request.user.students_unit.name}}</span>
+        {% endif %}
+        <a href="{% url "users:logout" %}">выйти</a>
+    </div>
+    {% endblock header %}
 </header>
 <main>
     {% block content %}{% endblock content %}
