@@ -12,18 +12,18 @@
     <tbody>
         {% for student, marks in marks_map.items %}
             <tr>
-                {% if not is_student|default:False %}<td>{{student}}</td>{% endif %}
-                <td>{% average_mark subject student %}</td>
+                {% if not is_student|default:False %}<td class="fullname">{{student}}</td>{% endif %}
+                <td><span class="mark">{% average_mark subject student %}</span></td>
                 {% for date in dates %}
                     <td>
                         {% date_in marks date as flag %}
                         {% for mark in marks %}
                             {% if date == mark.pub_date %}
-                                {{mark.value}}
+                                <span class="mark">{{mark.value}}</span>
                             {% endif %}
                         {% endfor %}
                         {% if not flag and not is_student|default:False %}
-                            <form method="post" action="{% url "marks:addmark" students_unit.id subject.id %}">
+                            <form class="mark_form" method="post" action="{% url "marks:addmark" students_unit.id subject.id %}">
                                 {% csrf_token %}
                                 <input type="hidden" name="student" value="{{student.id}}">
                                 <input type="hidden" name="teacher" value="{{request.user.id}}">

@@ -1,0 +1,64 @@
+@use '_fonts';
+
+:root {
+    --base-font-size: 18px;
+
+    --red-color: #FF4259;
+    --blue-color: #39A0FF;
+}
+
+* {
+    font-size: var(--base-font-size);
+    font-family: 'Lato';
+}
+
+body {
+    min-height: 100vh;
+    padding: 20px 30px;
+}
+
+a {
+    text-decoration: none;
+}
+
+table {
+    border-collapse: collapse;
+
+    th {
+        min-width: 50px;
+    }
+
+    td {
+        padding: 15px 5px;
+        text-align: center;
+    }
+
+    td.fullname {
+        white-space: nowrap;
+        min-width: fit-content;
+        text-align: left;
+    }
+}
+
+table,
+th,
+td {
+    border: 1px solid;
+}
+
+.mark {
+    font-family: 'Margarine';
+    color: var(--red-color);
+}
+
+td {
+    &:hover {
+        .mark_form {
+            display: block;
+        }
+    }
+
+    .mark_form {
+        display: none;
+    }
+}
