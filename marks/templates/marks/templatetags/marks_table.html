@@ -1,8 +1,8 @@
-{% load average_mark %}
+{% load average_mark date_in %}
 <table>
     <thead>
         <tr>
-            <th>ФИО</th>
+            {% if not is_student|default:False %}<th>ФИО</th>{% endif %}
             <th>Ср. балл</th>
             {% for date in dates %}
                 <th>{{date|date:"d.m"}}</th>
@@ -12,15 +12,28 @@
     <tbody>
         {% for student, marks in marks_map.items %}
             <tr>
-                <td>{{student}}</td>
+                {% if not is_student|default:False %}<td>{{student}}</td>{% endif %}
                 <td>{% average_mark subject student %}</td>
                 {% for date in dates %}
                     <td>
+                        {% date_in marks date as flag %}
                         {% for mark in marks %}
                             {% if date == mark.pub_date %}
                                 {{mark.value}}
                             {% endif %}
                         {% endfor %}
+                        {% if not flag and not is_student|default:False %}
+                            <form method="post" action="{% url "marks:addmark" students_unit.id subject.id %}">
+                                {% csrf_token %}
+                                <input type="hidden" name="student" value="{{student.id}}">
+                                <input type="hidden" name="teacher" value="{{request.user.id}}">
+                                <input type="hidden" name="subject" value="{{subject.id}}">
+                                <input type="date" style="display: none" name="pub_date" value="{{date|date:"Y-m-d"}}">
+                                {% for idx in '2345'|make_list %}
+                                    <label for="{{idx}}">{{idx}}<input onClick="this.form.submit()" id="{{idx}}" type="radio" name="value" value="{{idx}}"></label>
+                                {% endfor %}
+                            </form>
+                        {% endif %}
                     </td>
                 {% endfor %}
             </tr>

@@ -52,7 +52,7 @@ class Mark(models.Model):
         settings.AUTH_USER_MODEL, on_delete=models.PROTECT, 
         related_name='received_marks', verbose_name='студент', limit_choices_to={'groups__name': 'Студенты'}
     )
-    pub_date = models.DateTimeField('дата оценивания', auto_now_add=True)
+    pub_date = models.DateField('дата оценивания')
 
     class Meta:
         verbose_name = 'оценка'

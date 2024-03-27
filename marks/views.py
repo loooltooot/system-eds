@@ -1,9 +1,12 @@
 from django.views import generic, View
 from django.contrib.auth.mixins import LoginRequiredMixin, PermissionRequiredMixin
-from django.shortcuts import render, get_object_or_404
+from django.shortcuts import render, get_object_or_404, redirect
+from django.http import HttpResponseBadRequest
+from datetime import datetime
 
-from .models import Appointment, StudentsUnit, Subject
+from .models import Appointment, StudentsUnit, Subject, Mark
 from .mixins import AdminRedirectMixin
+from .forms import MarkForm
 
 # Create your views here.
 
@@ -21,13 +24,23 @@ class IndexView(LoginRequiredMixin, AdminRedirectMixin, View):
 class AddMarkView(LoginRequiredMixin, PermissionRequiredMixin, AdminRedirectMixin, View):
     permission_required = 'marks.add_mark'
 
+    def post(self, request, pk, sub_pk, *args, **kwargs):
+        form = MarkForm(request.POST)
+        if form.is_valid():
+            form.save()
+            return redirect('marks:show', pk=pk, sub_pk=sub_pk)
+        
+        return HttpResponseBadRequest(f'Невозможно выставить оценку, обратитесь к администратору')
+
+class ShowMarksView(LoginRequiredMixin, AdminRedirectMixin, View):
+    template = 'marks/addmark.html'
+
     def get(self, request, pk, sub_pk, *args, **kwargs):
-        template = 'marks/addmark.html'
         students_unit = get_object_or_404(StudentsUnit, pk=pk)
         subject = get_object_or_404(Subject, pk=sub_pk)
         context = {'students_unit': students_unit, 'subject': subject}
 
-        return render(request, template, context)
-        
-    def post(self, request, pk, sub_pk, *args, **kwargs):
-        pass
+        if request.user.groups.filter(name='Студенты').exists():
+            context['is_student'] = True
+
+        return render(request, self.template, context)

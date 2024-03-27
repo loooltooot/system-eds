@@ -4,10 +4,16 @@
 {% block content %}
 <section>
     <div>
-        <h2>Оценки студентов группы {{students_unit}}</h2>
+        <h2>
+            {% if is_student %}
+            Твои оценки
+            {% else %}
+            Оценки студентов группы {{students_unit}}
+            {% endif %}
+        </h2>
         <span>предмет: </span>
         <span>{{subject}}</span>
     </div>
-    {% marks_table students_unit subject %}
+    {% marks_table students_unit subject is_student|default:False %}
 </section>
 {% endblock content %}
