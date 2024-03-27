@@ -3,26 +3,11 @@
 
 {% block content %}
 <section>
-    <h2>Оценки студентов группы {{students_unit}}</h2>
-    <table>
-        <thead>
-            <tr>
-                <th>ФИО</th>
-                <th>Ср. балл</th>
-                <th>Оценки</th>
-            </tr>
-        </thead>
-        <tbody>
-            {% for student in students_unit.user_set.all %}
-                <tr>
-                    <td>{{student}}</td>
-                    <td>{% average_mark subject student %}</td>
-                    <td>
-                        {% marks_table student subject %}
-                    </td>
-                </tr>
-            {% endfor %}
-        </tbody>
-    </table>
+    <div>
+        <h2>Оценки студентов группы {{students_unit}}</h2>
+        <span>предмет: </span>
+        <span>{{subject}}</span>
+    </div>
+    {% marks_table students_unit subject %}
 </section>
 {% endblock content %}

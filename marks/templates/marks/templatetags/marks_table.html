@@ -1,12 +1,29 @@
+{% load average_mark %}
 <table>
     <thead>
-        {% for date in dates %}
-            <th>{{date|date:"d.m"}}</th>
-        {% endfor %}
+        <tr>
+            <th>ФИО</th>
+            <th>Ср. балл</th>
+            {% for date in dates %}
+                <th>{{date|date:"d.m"}}</th>
+            {% endfor %}
+        </tr>
     </thead>
     <tbody>
-        {% for mark in marks %}
-            <td>{{mark.value}}</td>
+        {% for student, marks in marks_map.items %}
+            <tr>
+                <td>{{student}}</td>
+                <td>{% average_mark subject student %}</td>
+                {% for date in dates %}
+                    <td>
+                        {% for mark in marks %}
+                            {% if date == mark.pub_date %}
+                                {{mark.value}}
+                            {% endif %}
+                        {% endfor %}
+                    </td>
+                {% endfor %}
+            </tr>
         {% endfor %}
     </tbody>
 </table>
