@@ -8,7 +8,7 @@ register = template.Library()
 @register.inclusion_tag('marks/templatetags/marks_table.html', takes_context=True)
 def marks_table(context, students_unit, subject, is_student=False):
     today = timezone.now().date()
-    month_ago = today - timezone.timedelta(days=30)
+    month_ago = today - timezone.timedelta(days=10)
     dates = []
 
     current_date = month_ago
@@ -22,7 +22,7 @@ def marks_table(context, students_unit, subject, is_student=False):
         student = context['request'].user
         marks[student] = Mark.objects.filter(student=student, subject=subject)
     else:
-        for student in students_unit.user_set.all():
+        for student in students_unit.user_set.all().order_by('surname'):
             marks[student] = Mark.objects.filter(student=student, subject=subject)
 
     context['marks_map'] = marks
