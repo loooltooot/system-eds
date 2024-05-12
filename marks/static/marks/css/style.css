@@ -1,3 +1,21 @@
+:root {
+  --primary-color: #39A0FF;
+  --primary-light-color: #CCE7FF;
+  --primary-shade-color: #2B74B7;
+  --secondary-color: #FF4259;
+  --secondary-light-color: #FFD0D6;
+  --secondary-shade-color: #AD2D3C;
+  --text-color: #000000;
+  --text-light-color: #545454;
+  --text-ultralight-color: #B0B0B0;
+  --bg-color: #F4F9FF;
+  --bg-light-color: #FFFFFF;
+  --xs-font-size: 14px;
+  --base-font-size: 16px;
+  --s-font-size: 20px;
+  --m-font-size: 40px;
+}
+
 @font-face {
   font-family: Lato;
   font-weight: 400;
@@ -18,12 +36,6 @@
   font-weight: 400;
   src: url(../fonts/Margarine-Regular.ttf);
 }
-:root {
-  --base-font-size: 18px;
-  --red-color: #FF4259;
-  --blue-color: #39A0FF;
-}
-
 * {
   font-size: var(--base-font-size);
   font-family: "Lato";
@@ -32,44 +44,17 @@
 body {
   min-height: 100vh;
   padding: 20px 30px;
+  background-color: var(--bg-color);
 }
 
 a {
   text-decoration: none;
 }
 
-table {
-  border-collapse: collapse;
-}
-table th {
-  min-width: 50px;
-}
-table td {
-  padding: 15px 5px;
-  text-align: center;
-}
-table td.fullname {
-  white-space: nowrap;
-  min-width: fit-content;
-  text-align: left;
-}
-
-table,
-th,
-td {
-  border: 1px solid;
-}
-
-.mark {
-  font-family: "Margarine";
-  color: var(--red-color);
-}
-
-td:hover .mark_form {
-  display: block;
-}
-td .mark_form {
-  display: none;
+.card {
+  background-color: var(--bg-light-color);
+  border-radius: 30px;
+  display: flex;
 }
 
 /*# sourceMappingURL=style.css.map */

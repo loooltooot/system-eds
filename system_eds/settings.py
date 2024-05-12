@@ -45,6 +45,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'users',
     'marks',
+    'django.forms',
 ]
 
 MIDDLEWARE = [
@@ -142,3 +143,5 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 AUTH_USER_MODEL = 'users.User'
 
 LOGIN_URL = reverse_lazy('users:login')
+
+FORM_RENDERER = "django.forms.renderers.TemplatesSetting"

@@ -1,5 +1,15 @@
-<form method='post'>
+{% extends "marks/base_site.html" %}
+{% load static %}
+
+{% block page_specific_styles %}
+<link rel="stylesheet" href="{% static "users/css/login.css" %}">
+{% endblock page_specific_styles %}
+
+{% block content %}
+<form class='card auth' method='post'>
+    <h1>Авторизация</h1>
     {% csrf_token %}
-    {{form.as_p}}
-    <input type="submit" value="Авторизоваться">
+    {{form.as_div}}
+    <input type="submit" value="Войти">
 </form>
+{% endblock content %}

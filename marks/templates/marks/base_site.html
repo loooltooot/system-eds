@@ -1,5 +1,5 @@
 {% extends "marks/base.html" %}
-{% load static version_label %}
+{% load static %}
 
 {% block body %}
 <header>
@@ -7,7 +7,6 @@
     <a href="{% url "marks:index" %}">
         <img src="{% static "marks/b_logo.svg" %}" alt="Система ЭДС">
     </a>
-    <span>{% version_label %}</span>
     <div>
         <span>{{request.user.get_full_name}}</span>
         {% if request.user.students_unit %}
