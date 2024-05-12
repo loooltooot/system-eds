@@ -1,3 +1,61 @@
+body {
+  box-sizing: border-box;
+  max-height: 100vh;
+  overflow: hidden;
+}
 
+#logo {
+  width: 327px;
+}
+
+.auth {
+  width: 458px;
+  row-gap: 50px;
+  margin-inline: auto;
+  position: relative;
+  margin-top: 120px;
+}
+.auth .flex {
+  row-gap: 25px;
+}
+.auth h1 {
+  text-align: center;
+}
+.auth input {
+  font-size: var(--s-font-size);
+}
+.auth img {
+  position: absolute;
+}
+.auth img#b5 {
+  left: -45px;
+  top: 19px;
+  width: 73px;
+  transform: rotate(13deg);
+}
+.auth img#b51 {
+  left: -70px;
+  bottom: -17px;
+  width: 90px;
+  z-index: -1;
+  transform: rotate(-17deg);
+}
+.auth img#b4 {
+  right: -23px;
+  top: -16.5px;
+  width: 64px;
+}
+.auth img#r4 {
+  left: -50px;
+  bottom: 82px;
+  width: 61px;
+  transform: rotate(-20deg);
+}
+.auth img#r51 {
+  right: -65px;
+  bottom: -32px;
+  width: 93px;
+  transform: rotate(7deg);
+}
 
 /*# sourceMappingURL=login.css.map */

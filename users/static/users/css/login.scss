@@ -1,0 +1,68 @@
+body {
+    box-sizing: border-box;
+    max-height: 100vh;
+    overflow: hidden;
+}
+
+#logo {
+    width: 327px;
+}
+
+.auth {
+    width: 458px;
+    row-gap: 50px;
+    margin-inline: auto;
+    position: relative;
+    margin-top: 120px;
+
+    .flex {
+        row-gap: 25px;
+    }
+
+    h1 {
+        text-align: center;
+    }
+
+    input {
+        font-size: var(--s-font-size);
+    }
+
+    img {
+        position: absolute;
+
+        &#b5 {
+            left: -45px;
+            top: 19px;
+            width: 73px;
+            transform: rotate(13deg);
+        }
+
+        &#b51 {
+            left: -70px;
+            bottom: -17px;
+            width: 90px;
+            z-index: -1;
+            transform: rotate(-17deg);
+        }
+
+        &#b4 {
+            right: -23px;
+            top: -16.5px;
+            width: 64px;
+        }
+
+        &#r4 {
+            left: -50px;
+            bottom: 82px;
+            width: 61px;
+            transform: rotate(-20deg);
+        }
+
+        &#r51 {
+            right: -65px;
+            bottom: -32px;
+            width: 93px;
+            transform: rotate(7deg);
+        }
+    }
+}

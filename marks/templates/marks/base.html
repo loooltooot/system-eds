@@ -7,10 +7,11 @@
     <title>{{title|default:'Система ЭДС'}}</title>
     <link rel="stylesheet" href="{% static "marks/css/normalize.css" %}">
     <link rel="stylesheet" href="{% static "marks/css/style.css" %}">
-    {% block page_specific_styles %}{% endblock page_specific_styles %}
+    {% block page_styles %}{% endblock page_styles %}
     {% block extra_head %}{% endblock extra_head %}
 </head>
 <body>
     {% block body %}{% endblock body %}
 </body>
+{% block page_scripts %}{% endblock page_scripts %}
 </html>
