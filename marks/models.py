@@ -42,7 +42,18 @@ class Appointment(models.Model):
         return f'{self.students_unit} {self.subject} {self.teacher}'.strip()
 
 class Mark(models.Model):
-    value = models.PositiveSmallIntegerField('оценка')
+    VALUES_CHOICES = [
+        ('2', '2'),
+        ('3', '3'),
+        ('4', '4'),
+        ('5', '5'),
+        ('H', 'H'),
+        ('/', '/'),
+        ('+', '+'),
+        ('.', '.'),
+    ]
+
+    value = models.CharField('оценка', max_length=2, choices=VALUES_CHOICES)
     subject = models.ForeignKey(Subject, on_delete=models.PROTECT, verbose_name='предмет')
     teacher = models.ForeignKey(
         settings.AUTH_USER_MODEL, on_delete=models.PROTECT, 
@@ -52,6 +63,7 @@ class Mark(models.Model):
         settings.AUTH_USER_MODEL, on_delete=models.PROTECT, 
         related_name='received_marks', verbose_name='студент', limit_choices_to={'groups__name': 'Студенты'}
     )
+    feedback = models.TextField('обратная связь', blank=True)
     pub_date = models.DateField('дата оценивания')
 
     class Meta:

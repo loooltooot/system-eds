@@ -2,9 +2,11 @@
 
 from django.db import migrations
 from django.contrib.auth import get_user_model
+from django.contrib.auth.management import create_permissions
+from django.db.models import Q
 
 from marks.models import StudentsUnit, Subject, Appointment
-from django.contrib.auth.models import Group
+from django.contrib.auth.models import Group, Permission
 
 def seed_users(apps, scheme_editor):
     User = get_user_model()
@@ -51,15 +53,24 @@ def seed_users(apps, scheme_editor):
     t3.groups.set([teachers])
 
     User.objects.create_superuser(surname='Администраторов', name='Администратор', phone='+79648686553', password='lolita').groups.set([administrators])
+    User.objects.create_user(surname='Майорова', name='Ольга', patronymic='Анатольевна', phone='+79648686554', password='lolita', is_staff=True).groups.set([administrators])
 
     Appointment.objects.create(students_unit=my_group, subject=s1, teacher=t1)
     Appointment.objects.create(students_unit=my_group, subject=s2, teacher=t2)
     Appointment.objects.create(students_unit=my_group, subject=s3, teacher=t3)
 
+    for app_config in apps.get_app_configs():
+        app_config.models_module = True
+        create_permissions(app_config, verbosity=0)
+        app_config.models_module = None
+
+    teachers.permissions.add(Permission.objects.get(codename='add_mark'))
+    administrators.permissions.add(*Permission.objects.filter(Q(content_type__app_label='marks') | Q(content_type__app_label='users')))
+
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('marks', '0002_alter_appointment_teacher_alter_mark_pub_date_and_more'),
+        ('marks', '0001_initial'),
         ('users', '0002_user_students_unit'),
     ]
 
