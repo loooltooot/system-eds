@@ -2,23 +2,29 @@
 {% load static %}
 
 {% block body %}
-<header>
-    {% block header %}
-    <a href="{% url "marks:index" %}">
-        <img id="logo" src="{% static "marks/b_logo.svg" %}" alt="Система ЭДС">
-    </a>
-    <div>
-        <span>{{request.user.get_full_name}}</span>
-        {% if request.user.students_unit %}
-            <span>{{request.user.students_unit.name}}</span>
-        {% endif %}
-        <a href="{% url "users:logout" %}">выйти</a>
-    </div>
-    {% endblock header %}
-</header>
-<main>
-    {% block content %}{% endblock content %}
-</main>
+<div id="top" class="flex">
+    <header>
+        {% block header %}
+        <a href="{% url "marks:index" %}">
+            <img id="logo" src="{% static "marks/b_logo.svg" %}" alt="Система ЭДС">
+        </a>
+        <div class="card card-small profile">
+            <div class="name">
+                <span>{{request.user.get_short_name}}</span>
+                <img src="{% static "users/imgs/default_user.png" %}" alt="">
+            </div>
+            <ul class="options">
+                <li>
+                    <a href="{% url "users:logout" %}">Выйти</a>
+                </li>
+            </ul>
+        </div>
+        {% endblock header %}
+    </header>
+    <main>
+        {% block content %}{% endblock content %}
+    </main>
+</div>
 <footer>
     {% block footer %}{% endblock footer %}
 </footer>

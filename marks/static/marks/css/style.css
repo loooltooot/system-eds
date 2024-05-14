@@ -45,6 +45,11 @@ body {
   min-height: 100vh;
   padding: 40px 60px 0;
   background-color: var(--bg-color);
+  box-sizing: border-box;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
 }
 
 img,
@@ -69,6 +74,8 @@ h4 {
 
 a {
   text-decoration: none;
+  display: block;
+  color: var(--text-color);
 }
 
 ul {
@@ -91,6 +98,20 @@ input:focus {
   outline: 2px var(--primary-light-color) solid;
 }
 
+section {
+  row-gap: 25px;
+}
+
+#top {
+  row-gap: 100px;
+}
+
+.subjects-list {
+  flex-wrap: wrap;
+  column-gap: 25px;
+  row-gap: 25px;
+}
+
 .card {
   background-color: var(--bg-light-color);
   border-radius: 30px;
@@ -100,7 +121,7 @@ input:focus {
   box-sizing: border-box;
 }
 
-.card .card-small {
+.card.card-small {
   border-radius: 10px;
   padding: 20px 30px;
 }
@@ -130,6 +151,33 @@ input:focus {
 }
 .errorlist li {
   color: var(--text-light-color);
+}
+
+.name {
+  display: flex;
+  align-items: center;
+  column-gap: 15px;
+}
+.name span {
+  font-weight: 700;
+}
+.name img {
+  width: 30px;
+  height: 30px;
+}
+
+#top header {
+  display: flex;
+  justify-content: space-between;
+}
+#top header #logo {
+  width: 168px;
+}
+#top header .profile.card {
+  height: fit-content;
+  padding: 10px 20px;
+  row-gap: 10px;
+  cursor: pointer;
 }
 
 /*# sourceMappingURL=style.css.map */

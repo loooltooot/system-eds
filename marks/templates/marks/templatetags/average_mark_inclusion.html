@@ -1,0 +1,11 @@
+{% load static %}
+
+{% if average_mark %}
+<div>
+    <span>Средний балл: </span>
+    <span class="mark">{{average_mark}}</span>
+</div>
+{% endif %}
+{% if img_src %}
+<img class="mark3d" src="{% static img_src %}" alt="">
+{% endif %}
