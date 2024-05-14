@@ -166,6 +166,40 @@ section {
   height: 30px;
 }
 
+table {
+  border-collapse: collapse;
+}
+table th {
+  min-width: 50px;
+}
+table td {
+  padding: 15px 5px;
+  text-align: center;
+}
+table td.fullname {
+  white-space: nowrap;
+  min-width: fit-content;
+  text-align: left;
+}
+
+table,
+th,
+td {
+  border: 1px solid;
+}
+
+.mark {
+  font-family: "Margarine";
+  color: var(--secondary-color);
+}
+
+td:hover .mark_form {
+  display: block;
+}
+td .mark_form {
+  display: none;
+}
+
 #top header {
   display: flex;
   justify-content: space-between;

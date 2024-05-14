@@ -2,6 +2,8 @@
   min-width: 300px;
   row-gap: 10px;
   position: relative;
+  transition: 0.3s ease;
+  outline: var(--bg-light-color) 2px solid;
 }
 .subjects-list .student h3 {
   font-size: var(--s-font-size);
@@ -14,27 +16,21 @@
   font-weight: 400;
 }
 .subjects-list .student .mark3d {
-  width: 52px;
+  height: 57px;
   position: absolute;
   right: 5px;
   top: -15.5px;
 }
-.subjects-list .student:hover h3 {
-  color: var(--primary-shade-color);
+.subjects-list .student .mark,
+.subjects-list .student .marks-warning {
+  color: var(--secondary-color);
+  font-size: var(--s-font-size);
 }
-.subjects-list .student:hover .mark3d {
-  animation: popup 0.3s ease;
+.subjects-list .student .mark {
+  font-family: "Margarine";
 }
-@keyframes popup {
-  0% {
-    top: -15.5px;
-  }
-  50% {
-    top: -35px;
-  }
-  100% {
-    top: -15.5px;
-  }
+.subjects-list .student:hover {
+  outline: var(--primary-light-color) 2px solid;
 }
 
 /*# sourceMappingURL=dashboard.css.map */

@@ -5,7 +5,11 @@
     <span>Средний балл: </span>
     <span class="mark">{{average_mark}}</span>
 </div>
-{% endif %}
 {% if img_src %}
 <img class="mark3d" src="{% static img_src %}" alt="">
+{% endif %}
+{% else %}
+<div>
+    <span class="marks-warning">Оценок нет</span>
+</div>
 {% endif %}

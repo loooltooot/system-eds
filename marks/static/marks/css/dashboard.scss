@@ -3,6 +3,8 @@
         min-width: 300px;
         row-gap: 10px;
         position: relative;
+        transition: .3s ease;
+        outline: var(--bg-light-color) 2px solid;
 
         h3 {
             font-size: var(--s-font-size);
@@ -18,34 +20,24 @@
         }
 
         .mark3d {
-            width: 52px;
+            height: 57px;
             position: absolute;
             right: 5px;
             top: -15.5px;
         }
 
-        &:hover {
-            h3 {
-                color: var(--primary-shade-color);
-            }
-
-            .mark3d {
-                animation: popup .3s ease;
-            }
+        .mark,
+        .marks-warning {
+            color: var(--secondary-color);
+            font-size: var(--s-font-size);
         }
 
-        @keyframes popup {
-            0% {
-                top: -15.5px;
-            }
+        .mark {
+            font-family: "Margarine";
+        }
 
-            50% {
-                top: -35px;
-            }
-
-            100% {
-                top: -15.5px;
-            }
+        &:hover {
+            outline: var(--primary-light-color) 2px solid;
         }
     }
 }
