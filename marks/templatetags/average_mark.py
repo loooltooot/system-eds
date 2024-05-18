@@ -18,6 +18,9 @@ def get_average_mark(subject, student):
         except ValueError:
             pass
 
+    if len(int_marks) == 0:
+        return None
+
     return round(sum(int_marks) / len(int_marks) * 100) / 100
 
 @register.simple_tag(takes_context=True)

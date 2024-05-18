@@ -1,21 +1,19 @@
 {% extends "marks/dashboard/base.html" %}
 {% block content %}
-<section>
+<section class="flex">
     <h2>Ваши предметы</h1>
-    <ul>
+    <ul class="subjects-list">
         {% for appointment in related_appointments %}
-            <li>
-                <div>
-                    <h3>{{appointment.subject}}</h3>
-                    {% if appointment.subject.description %}
-                        <p>{{appointment.subject.description}}</p>
-                    {% endif %}
-                    <div>
-                        <span>группа: </span>
-                        <a href="{% url "marks:show" appointment.students_unit_id appointment.subject_id %}">{{appointment.students_unit}}</a>
-                    </div>
-                </div>
-            </li>
+        <li>
+            <a class="card teacher flex" href="{% url "marks:show" appointment.students_unit_id appointment.subject_id %}">
+                <h3>{{appointment.subject}}</h3>
+                {% if appointment.subject.description %}
+                <p>{{appointment.subject.description}}</p>
+                {% endif %}
+                <span>Группа: {{appointment.students_unit}}</span>
+                <span>Студентов без оценок: <span class="mark">{{appointment.students_with_no_marks}}</span></span>
+            </a>
+        </li>
         {% endfor %}
     </ul>
 </section>

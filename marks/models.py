@@ -38,6 +38,25 @@ class Appointment(models.Model):
         verbose_name = 'назначение преподавателя'
         verbose_name_plural = 'назначения преподавателей'
 
+    def students_with_no_marks(self):
+        count = 0
+        for student in self.students_unit.user_set.all():
+            student_marks = student.received_marks.filter(subject=self.subject)
+            if student_marks.exists():
+                int_marks = []
+                for mark in student_marks:
+                    try:
+                        parsed_mark = int(mark.value)
+                        int_marks.append(parsed_mark)
+                    except ValueError:
+                        pass
+                if len(int_marks) == 0:
+                    count += 1
+            else:
+                count += 1
+
+        return count
+
     def __str__(self) -> str:
         return f'{self.students_unit} {self.subject} {self.teacher}'.strip()
 

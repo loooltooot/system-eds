@@ -1,29 +1,14 @@
 .subjects-list {
-    .student {
-        min-width: 300px;
-        row-gap: 10px;
+    .card {
         position: relative;
         transition: .3s ease;
         outline: var(--bg-light-color) 2px solid;
+        row-gap: 10px;
+        min-width: 300px;
 
         h3 {
             font-size: var(--s-font-size);
             color: var(--text-color);
-        }
-
-        .name {
-            column-gap: 10px;
-
-            span {
-                font-weight: 400;
-            }
-        }
-
-        .mark3d {
-            height: 57px;
-            position: absolute;
-            right: 5px;
-            top: -15.5px;
         }
 
         .mark,
@@ -38,6 +23,23 @@
 
         &:hover {
             outline: var(--primary-light-color) 2px solid;
+        }
+    }
+
+    .student {
+        .name {
+            column-gap: 10px;
+
+            span {
+                font-weight: 400;
+            }
+        }
+
+        .mark3d {
+            height: 57px;
+            position: absolute;
+            right: 5px;
+            top: -15.5px;
         }
     }
 }
