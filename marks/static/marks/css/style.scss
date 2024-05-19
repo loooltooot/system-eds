@@ -71,6 +71,27 @@ section {
     row-gap: 100px;
 }
 
+::selection {
+    background-color: var(--secondary-light-color);
+}
+
+::-moz-selection {
+    background-color: var(--secondary-light-color);
+}
+
+::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+}
+
+::-webkit-scrollbar-track {
+    background-color: var(--bg-light-color);
+}
+
+::-webkit-scrollbar-thumb {
+    background-color: var(--primary-light-color);
+}
+
 .subjects-list {
     flex-wrap: wrap;
     column-gap: 25px;
@@ -137,14 +158,23 @@ section {
 
 table {
     border-collapse: collapse;
+    width: fit-content;
+    background-color: var(--bg-light-color);
+    border-radius: 10px;
+    overflow: hidden;
 
     th {
-        min-width: 50px;
+        padding: 15px 15px;
+        background-color: var(--primary-light-color);
     }
 
     td {
-        padding: 15px 5px;
+        padding: 15px 15px;
         text-align: center;
+    }
+
+    tr:not(:last-child) {
+        border-bottom: 1px solid var(--primary-light-color);
     }
 
     td.fullname {
@@ -152,12 +182,6 @@ table {
         min-width: fit-content;
         text-align: left;
     }
-}
-
-table,
-th,
-td {
-    border: 1px solid;
 }
 
 .mark {
@@ -175,6 +199,14 @@ td {
     .mark_form {
         display: none;
     }
+}
+
+.table-container {
+    max-width: 100%;
+    overflow-x: auto;
+    max-height: 50vh;
+    padding: 10px;
+    position: relative;
 }
 
 #top header {

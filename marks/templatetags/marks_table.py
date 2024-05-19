@@ -7,15 +7,6 @@ register = template.Library()
 
 @register.inclusion_tag('marks/templatetags/marks_table.html', takes_context=True)
 def marks_table(context, students_unit, subject, is_student=False):
-    today = timezone.now().date()
-    month_ago = today - timezone.timedelta(days=10)
-    dates = []
-
-    current_date = month_ago
-    while current_date <= today:
-        dates.append(current_date)
-        current_date += timezone.timedelta(days=1)
-
     marks = {}
 
     if is_student:
@@ -23,9 +14,14 @@ def marks_table(context, students_unit, subject, is_student=False):
         marks[student] = Mark.objects.filter(student=student, subject=subject)
     else:
         for student in students_unit.user_set.all().order_by('surname'):
-            marks[student] = Mark.objects.filter(student=student, subject=subject)
+            marks[student] = student.received_marks.filter(subject=subject)
+    
+    dates = set()
+    for key in marks.keys():
+        for mark in marks[key]:
+            dates.add(mark.pub_date)
 
     context['marks_map'] = marks
-    context['dates'] = dates
+    context['dates'] = sorted(dates)
 
     return context

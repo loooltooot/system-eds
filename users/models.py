@@ -58,5 +58,8 @@ class User(AbstractBaseUser, PermissionsMixin):
     def get_short_name(self):
         return f'{self.surname} {self.name}'.strip()
     
+    def get_fio(self):
+        return f'{self.surname} {self.name[0]}. {self.patronymic[0]}.'.strip()
+    
     def __str__(self) -> str:
         return self.get_full_name()

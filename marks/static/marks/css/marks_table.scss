@@ -1,0 +1,21 @@
+section {
+    &>div {
+        display: flex;
+        flex-direction: column;
+        row-gap: 10px;
+    }
+}
+
+table {
+    td:nth-child(3) {
+        border-right: 1px solid var(--primary-light-color);
+    }
+
+    thead {
+        position: sticky;
+    }
+}
+
+#top {
+    row-gap: 50px;
+}

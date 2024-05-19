@@ -10,6 +10,10 @@
   --text-ultralight-color: #B0B0B0;
   --bg-color: #EEF6FF;
   --bg-light-color: #FFFFFF;
+  --5-color: #53c93b;
+  --4-color: #39c58b;
+  --3-color: #3bafcc;
+  --2-color: var(--secondary-color);
   --xs-font-size: 14px;
   --base-font-size: 16px;
   --s-font-size: 20px;
@@ -105,6 +109,27 @@ section {
   row-gap: 100px;
 }
 
+::selection {
+  background-color: var(--secondary-light-color);
+}
+
+::-moz-selection {
+  background-color: var(--secondary-light-color);
+}
+
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background-color: var(--bg-light-color);
+}
+
+::-webkit-scrollbar-thumb {
+  background-color: var(--primary-light-color);
+}
+
 .subjects-list {
   flex-wrap: wrap;
   column-gap: 25px;
@@ -167,24 +192,26 @@ section {
 
 table {
   border-collapse: collapse;
+  width: fit-content;
+  background-color: var(--bg-light-color);
+  border-radius: 10px;
+  overflow: hidden;
 }
 table th {
-  min-width: 50px;
+  padding: 15px 15px;
+  background-color: var(--primary-light-color);
 }
 table td {
-  padding: 15px 5px;
+  padding: 15px 15px;
   text-align: center;
+}
+table tr:not(:last-child) {
+  border-bottom: 1px solid var(--primary-light-color);
 }
 table td.fullname {
   white-space: nowrap;
   min-width: fit-content;
   text-align: left;
-}
-
-table,
-th,
-td {
-  border: 1px solid;
 }
 
 .mark {
@@ -197,6 +224,14 @@ td:hover .mark_form {
 }
 td .mark_form {
   display: none;
+}
+
+.table-container {
+  max-width: 100%;
+  overflow-x: auto;
+  max-height: 50vh;
+  padding: 10px;
+  position: relative;
 }
 
 #top header {

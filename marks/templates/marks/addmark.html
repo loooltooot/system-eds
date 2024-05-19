@@ -2,17 +2,16 @@
 {% load average_mark marks_table %}
 
 {% block content %}
-<section>
+<section class="flex">
     <div>
         <h2>
             {% if is_student %}
-            Твои оценки
+            Твои оценки по предмету {{subject}}
             {% else %}
             Оценки студентов группы {{students_unit}}
             {% endif %}
         </h2>
-        <span>предмет: </span>
-        <span>{{subject}}</span>
+        <span>Предмет: <span>{{subject}}</span></span>
     </div>
     {% marks_table students_unit subject is_student|default:False %}
 </section>

@@ -23,9 +23,18 @@ def get_average_mark(subject, student):
 
     return round(sum(int_marks) / len(int_marks) * 100) / 100
 
-@register.simple_tag(takes_context=True)
+@register.inclusion_tag('marks/templatetags/average_mark.html', takes_context=True)
 def average_mark(context, subject, student=None):
     if student is None:
         student = context['request'].user
 
-    return get_average_mark(subject, student)
+    average_mark = get_average_mark(subject, student)
+    module_context = {}
+
+    if average_mark is not None:
+        module_context['average_mark'] = average_mark
+        module_context['floor_mark'] = int(average_mark)
+    else: 
+        module_context['average_mark'] = '-'
+
+    return module_context
