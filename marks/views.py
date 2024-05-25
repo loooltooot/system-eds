@@ -36,7 +36,7 @@ class AddMarkView(LoginRequiredMixin, PermissionRequiredMixin, AdminRedirectMixi
             form.save()
             return redirect('marks:show', pk=pk, sub_pk=sub_pk)
         
-        return HttpResponseBadRequest(f'Невозможно выставить оценку, обратитесь к администратору')
+        return HttpResponseBadRequest()
 
 class ShowMarksView(LoginRequiredMixin, AdminRedirectMixin, View):
     template = 'marks/addmark.html'

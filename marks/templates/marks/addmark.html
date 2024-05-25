@@ -6,12 +6,12 @@
     <div>
         <h2>
             {% if is_student %}
-            Твои оценки по предмету {{subject}}
+            Успеваемость по предмету {{subject}}
             {% else %}
-            Оценки студентов группы {{students_unit}}
+            Успеваемость студентов группы {{students_unit}}
             {% endif %}
         </h2>
-        <span>Предмет: <span>{{subject}}</span></span>
+        {% if not is_student %}<span>Предмет: <span>{{subject}}</span></span>{% endif %}
     </div>
     {% marks_table students_unit subject is_student|default:False %}
 </section>

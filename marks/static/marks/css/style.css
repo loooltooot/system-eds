@@ -88,7 +88,9 @@ ul {
   display: flex;
 }
 
-input {
+input,
+textarea,
+select {
   border: none;
   outline: none;
   background-color: var(--bg-color);
@@ -97,8 +99,38 @@ input {
   width: 100%;
   box-sizing: border-box;
 }
-input:focus {
+input:focus,
+textarea:focus,
+select:focus {
   outline: 2px var(--primary-light-color) solid;
+}
+input::-ms-input-placeholder,
+textarea::-ms-input-placeholder,
+select::-ms-input-placeholder {
+  color: var(--text-ultralight-color);
+}
+input::-webkit-input-placeholder,
+textarea::-webkit-input-placeholder,
+select::-webkit-input-placeholder {
+  color: var(--text-ultralight-color);
+}
+input::-moz-placeholder,
+textarea::-moz-placeholder,
+select::-moz-placeholder {
+  color: var(--text-ultralight-color);
+}
+input::placeholder,
+textarea::placeholder,
+select::placeholder {
+  color: var(--text-ultralight-color);
+}
+
+textarea {
+  resize: none;
+}
+
+label {
+  display: block;
 }
 
 section {
@@ -229,9 +261,35 @@ td .mark_form {
 .table-container {
   max-width: 100%;
   overflow-x: auto;
-  max-height: 50vh;
-  padding: 10px;
+  max-height: 60vh;
+  padding: 0 10px 10px 0;
   position: relative;
+}
+
+.modal-window {
+  background-color: rgba(0, 0, 0, 0.6);
+  backdrop-filter: blur(4px);
+  -webkit-backdrop-filter: blur(4px);
+  width: 100%;
+  height: 100%;
+  position: fixed;
+  top: 0;
+  left: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 0;
+  z-index: -1;
+}
+.modal-window > :is(form, div) {
+  row-gap: 50px;
+  width: 500px;
+}
+.modal-window > :is(form, div) h2 {
+  text-align: center;
+}
+.modal-window div.flex {
+  row-gap: 25px;
 }
 
 #top header {

@@ -20,28 +20,16 @@
             {% for student, marks in marks_map.items %}
                 <tr>
                     <td>{{forloop.counter}}</td>
-                    {% if not is_student|default:False %}<td class="fullname">{{student.get_fio}}</td>{% endif %}
+                    {% if not is_student|default:False %}<td class="fullname" onclick="openMarkAddModal({{student.id}}, '{{student.get_fio}}')">{{student.get_fio}}</td>{% endif %}
                     <td>{% average_mark subject student %}</td>
                     {% for date in dates %}
                         <td>
                             {% date_in marks date as flag %}
                             {% for mark in marks %}
                                 {% if date == mark.pub_date %}
-                                    <span class="mark" style="color: var(--{{mark.value}}-color);">{{mark.value}}</span>
+                                    <span class="mark" style="color: {% if mark.value in "2345"|make_list %}var(--{{mark.value}}-color){% endif %}">{{mark.value}}</span>
                                 {% endif %}
                             {% endfor %}
-                            {% if not flag and not is_student|default:False %}
-                                <form class="mark_form" method="post" action="{% url "marks:addmark" students_unit.id subject.id %}">
-                                    {% csrf_token %}
-                                    <input type="hidden" name="student" value="{{student.id}}">
-                                    <input type="hidden" name="teacher" value="{{request.user.id}}">
-                                    <input type="hidden" name="subject" value="{{subject.id}}">
-                                    <input type="date" style="display: none" name="pub_date" value="{{date|date:"Y-m-d"}}">
-                                    {% for idx in '2345'|make_list %}
-                                        <label for="{{idx}}">{{idx}}<input onClick="this.form.submit()" id="{{idx}}" type="radio" name="value" value="{{idx}}"></label>
-                                    {% endfor %}
-                                </form>
-                            {% endif %}
                         </td>
                     {% endfor %}
                 </tr>
@@ -50,15 +38,77 @@
     </table>
 </div>
 
+{% if not is_student %}
+<div onclick="closeModal('#add-mark-modal')" class="modal-window" id="add-mark-modal">
+    <form onclick="event.stopPropagation()" class="card" method="post" action="{% url "marks:addmark" students_unit.id subject.id %}">
+        <div>
+            <h2>Оценивание</h2>
+            <span id="student-fio-hint"></span>
+        </div>
+        <div class="flex">
+            {% csrf_token %}
+            <input type="hidden" name="student" value="">
+            <input type="hidden" name="teacher" value="{{request.user.id}}">
+            <input type="hidden" name="subject" value="{{subject.id}}">
+            <ul id="vals-list">
+                {% for val in "2345H/+."|make_list  %}
+                <li>
+                    <input required name="value" type="radio" value="{{val}}" id="val_{{val}}">
+                    <label style="--module-bg-color: {% if val in "2345"|make_list %}var(--{{val}}-color){% else %}var(--text-ultralight-color){% endif %}" class="mark" for="val_{{val}}">{{val}}</label>
+                </li>
+                {% endfor %}
+            </ul>
+            <textarea placeholder="Комментарий к оценке" name="feedback" id="feedback"></textarea>
+            <input required type="date" name="pub_date" value="{% now "Y-m-d" %}">
+        </div>
+        <input class="button" type="submit" value="Поставить оценку">
+    </form>
+</div>
+{% endif %}
+
+<div class="modal-window" id="show-mark-modal">
+    <div class="card">
+        <div>
+            <h2>Оценка <span class="mark" id="show-mark"></span></h2>
+            <span id="show-student-fio-hint"></span>
+        </div>
+        <div class="flex">
+            <p id="show-mark-feedback"></p>
+            <span id="show-mark-date"></span>
+        </div>
+    </div>
+</div>
+
 {% block page_scripts %}
+<script src="{% static "users/js/gsap.min.js" %}"></script>
 <script>
     document.addEventListener('DOMContentLoaded', function() {
         const tableContainer = document.querySelector('.table-container');
         const thead = document.querySelector('thead');
     
         tableContainer.addEventListener('scroll', function() {
-            thead.style.top = tableContainer.scrollTop - 10 + 'px';
+            thead.style.top = tableContainer.scrollTop + 'px';
         });
     });
-    </script>
+
+    markAddModal = document.getElementById('add-mark-modal')
+
+    function openMarkAddModal(studentId, studentFio) {
+        openModal('#add-mark-modal')
+        markAddModal.querySelector("input[name='student']").value = studentId 
+        markAddModal.querySelector("#student-fio-hint").innerHTML = studentFio 
+    }
+
+    function openModal(modalSelector) {
+        tl = gsap.timeline({defaults: {duration: 0.5}})
+        tl.to(modalSelector, {zIndex: 1})
+        tl.to(modalSelector, {opacity: 1}, "<+=0.1")
+    }
+
+    function closeModal(modalSelector) {
+        tl = gsap.timeline({defaults: {duration: 0.3}})
+        tl.to(modalSelector, {opacity: 0})
+        tl.to(modalSelector, {zIndex: -1})
+    }
+</script>
 {% endblock page_scripts %}
