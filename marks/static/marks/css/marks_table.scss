@@ -13,6 +13,17 @@ table {
 
     thead {
         position: sticky;
+        z-index: 2;
+    }
+
+    &.student-table {
+        td:nth-child(3) {
+            border-right: none;
+        }
+
+        td:nth-child(2) {
+            border-right: 1px solid var(--primary-light-color);
+        }
     }
 }
 
@@ -78,10 +89,38 @@ table {
     }
 }
 
-#student-fio-hint {
+.hint {
     color: var(--text-ultralight-color);
     text-align: center;
     width: 100%;
     display: block;
     font-size: var(--xs-font-size);
+}
+
+#add-mark-modal {
+    textarea {
+        height: 100px;
+    }
+}
+
+#show-mark-modal {
+    .mark {
+        font-size: var(--m-font-size);
+    }
+
+    .card {
+        row-gap: 25px;
+    }
+
+    .feedback {
+        margin: 0;
+        border-left: 2px var(--primary-shade-color) solid;
+        padding-left: 10px;
+        font-size: var(--s-font-size);
+        word-break: break-word;
+    }
+
+    .date {
+        color: var(--text-ultralight-color);
+    }
 }

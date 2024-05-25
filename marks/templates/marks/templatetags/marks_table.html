@@ -5,7 +5,7 @@
 {% endblock page_styles %}
 
 <div class="table-container">
-    <table>
+    <table {% if is_student %}class="student-table"{% endif %}>
         <thead>
             <tr>
                 <th>№</th>
@@ -24,10 +24,13 @@
                     <td>{% average_mark subject student %}</td>
                     {% for date in dates %}
                         <td>
-                            {% date_in marks date as flag %}
                             {% for mark in marks %}
                                 {% if date == mark.pub_date %}
-                                    <span class="mark" style="color: {% if mark.value in "2345"|make_list %}var(--{{mark.value}}-color){% endif %}">{{mark.value}}</span>
+                                    <span 
+                                        {% if mark.feedback %}onclick="openMarkShowModal('{{mark.value}}', '{% if not is_student %}{{student.get_fio}}{% else %}{{mark.teacher.get_fio}}{% endif %}', '{{mark.feedback}}', '{{mark.pub_date}}')"{% endif %} 
+                                        class="mark{% if mark.feedback %} show-more{% endif %}" style="color: {% if mark.value in "2345"|make_list %}var(--{{mark.value}}-color){% endif %}">
+                                        {{mark.value}}
+                                    </span>
                                 {% endif %}
                             {% endfor %}
                         </td>
@@ -43,7 +46,7 @@
     <form onclick="event.stopPropagation()" class="card" method="post" action="{% url "marks:addmark" students_unit.id subject.id %}">
         <div>
             <h2>Оценивание</h2>
-            <span id="student-fio-hint"></span>
+            <span class="hint"></span>
         </div>
         <div class="flex">
             {% csrf_token %}
@@ -58,23 +61,23 @@
                 </li>
                 {% endfor %}
             </ul>
-            <textarea placeholder="Комментарий к оценке" name="feedback" id="feedback"></textarea>
-            <input required type="date" name="pub_date" value="{% now "Y-m-d" %}">
+            <textarea maxlength="500" placeholder="Комментарий к оценке" name="feedback" id="feedback"></textarea>
+            <input required type="date" name="pub_date" value="{% now "Y-m-d" %}" max="{% now "Y-m-d" %}">
         </div>
         <input class="button" type="submit" value="Поставить оценку">
     </form>
 </div>
 {% endif %}
 
-<div class="modal-window" id="show-mark-modal">
-    <div class="card">
+<div onclick="closeModal('#show-mark-modal')" class="modal-window" id="show-mark-modal">
+    <div onclick="event.stopPropagation()" class="card">
         <div>
-            <h2>Оценка <span class="mark" id="show-mark"></span></h2>
-            <span id="show-student-fio-hint"></span>
+            <h2>Оценка <span class="mark"></span></h2>
+            <span class="hint"></span>
         </div>
         <div class="flex">
-            <p id="show-mark-feedback"></p>
-            <span id="show-mark-date"></span>
+            <p class="feedback"></p>
+            <span class="date"></span>
         </div>
     </div>
 </div>
@@ -92,23 +95,32 @@
     });
 
     markAddModal = document.getElementById('add-mark-modal')
+    markShowModal = document.getElementById('show-mark-modal')
 
     function openMarkAddModal(studentId, studentFio) {
         openModal('#add-mark-modal')
         markAddModal.querySelector("input[name='student']").value = studentId 
-        markAddModal.querySelector("#student-fio-hint").innerHTML = studentFio 
+        markAddModal.querySelector(".hint").innerHTML = studentFio 
+    }
+
+    function openMarkShowModal(mark, studentFio, markFeedback, markDate) {
+        openModal('#show-mark-modal')
+        markShowModal.querySelector(".hint").innerHTML = studentFio 
+        markShowModal.querySelector(".mark").innerHTML = mark 
+        markShowModal.querySelector(".feedback").innerHTML = markFeedback 
+        markShowModal.querySelector(".date").innerHTML = markDate 
     }
 
     function openModal(modalSelector) {
         tl = gsap.timeline({defaults: {duration: 0.5}})
-        tl.to(modalSelector, {zIndex: 1})
+        tl.to(modalSelector, {zIndex: 3, duration: 0.01})
         tl.to(modalSelector, {opacity: 1}, "<+=0.1")
     }
 
     function closeModal(modalSelector) {
         tl = gsap.timeline({defaults: {duration: 0.3}})
         tl.to(modalSelector, {opacity: 0})
-        tl.to(modalSelector, {zIndex: -1})
+        tl.to(modalSelector, {zIndex: -1, duration: 0.01})
     }
 </script>
 {% endblock page_scripts %}

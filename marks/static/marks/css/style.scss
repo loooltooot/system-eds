@@ -40,6 +40,10 @@ a {
     text-decoration: none;
     display: block;
     color: var(--text-color);
+
+    &:hover {
+        color: var(--primary-color);
+    }
 }
 
 ul {
@@ -213,6 +217,20 @@ table {
 .mark {
     font-family: 'Margarine';
     color: var(--secondary-color);
+
+    &.show-more {
+        cursor: pointer;
+        position: relative;
+
+        &::before {
+            content: "*";
+            position: absolute;
+            right: -8px;
+            top: -8px;
+            color: var(--primary-shade-color);
+            z-index: 1;
+        }
+    }
 }
 
 td {

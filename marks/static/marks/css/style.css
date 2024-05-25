@@ -80,6 +80,9 @@ a {
   display: block;
   color: var(--text-color);
 }
+a:hover {
+  color: var(--primary-color);
+}
 
 ul {
   margin: 0;
@@ -249,6 +252,18 @@ table td.fullname {
 .mark {
   font-family: "Margarine";
   color: var(--secondary-color);
+}
+.mark.show-more {
+  cursor: pointer;
+  position: relative;
+}
+.mark.show-more::before {
+  content: "*";
+  position: absolute;
+  right: -8px;
+  top: -8px;
+  color: var(--primary-shade-color);
+  z-index: 1;
 }
 
 td:hover .mark_form {
