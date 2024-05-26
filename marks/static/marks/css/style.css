@@ -253,6 +253,9 @@ table td.fullname {
   font-family: "Margarine";
   color: var(--secondary-color);
 }
+.mark.pointer {
+  cursor: pointer;
+}
 .mark.show-more {
   cursor: pointer;
   position: relative;

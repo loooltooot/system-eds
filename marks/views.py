@@ -37,6 +37,34 @@ class AddMarkView(LoginRequiredMixin, PermissionRequiredMixin, AdminRedirectMixi
             return redirect('marks:show', pk=pk, sub_pk=sub_pk)
         
         return HttpResponseBadRequest()
+    
+class EditMarkView(LoginRequiredMixin, PermissionRequiredMixin, AdminRedirectMixin, View):
+    permission_required = 'marks.add_mark'
+    
+    def post(self, request, pk, sub_pk, *args, **kwargs):
+        students_unit = get_object_or_404(StudentsUnit, pk=pk)
+        subject = get_object_or_404(Subject, pk=sub_pk)
+        mark = get_object_or_404(Mark, pk=request.POST['id'])
+        new_feedback = request.POST['feedback']
+        new_value = request.POST['value']
+
+        if not Appointment.objects.filter(teacher=request.user, subject=subject, students_unit=students_unit).exists():
+            return HttpResponseForbidden()
+
+        if new_value not in ['2', '3', '4', '5', '+', '.', '/', 'H']:
+            return HttpResponseBadRequest()
+        
+        if mark.value not in ['+', '.', '/'] and mark.value != new_value:
+            return HttpResponseForbidden()
+        
+        if new_feedback != mark.feedback:
+            mark.feedback = new_feedback
+
+        if new_value != mark.value:
+            mark.value = new_value
+
+        mark.save()
+        return redirect('marks:show', pk=pk, sub_pk=sub_pk)
 
 class ShowMarksView(LoginRequiredMixin, AdminRedirectMixin, View):
     template = 'marks/addmark.html'

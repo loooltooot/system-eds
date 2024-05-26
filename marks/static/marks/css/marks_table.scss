@@ -39,7 +39,7 @@ table {
     }
 }
 
-#vals-list {
+.vals-list {
     column-gap: 15px;
     row-gap: 15px;
     margin-inline: auto;
@@ -120,6 +120,12 @@ table {
         word-break: break-word;
     }
 
+    .date {
+        color: var(--text-ultralight-color);
+    }
+}
+
+#edit-mark-modal {
     .date {
         color: var(--text-ultralight-color);
     }

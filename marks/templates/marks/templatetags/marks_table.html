@@ -27,8 +27,13 @@
                             {% for mark in marks %}
                                 {% if date == mark.pub_date %}
                                     <span 
-                                        {% if mark.feedback %}onclick="openMarkShowModal('{{mark.value}}', '{% if not is_student %}{{student.get_fio}}{% else %}{{mark.teacher.get_fio}}{% endif %}', '{{mark.feedback}}', '{{mark.pub_date}}')"{% endif %} 
-                                        class="mark{% if mark.feedback %} show-more{% endif %}" style="color: {% if mark.value in "2345"|make_list %}var(--{{mark.value}}-color){% endif %}">
+                                        {% if mark.value in "2345H"|make_list or is_student %}
+                                        onclick="openMarkShowModal('{{mark.value}}', '{% if not is_student %}{{student.get_fio}}{% else %}{{mark.teacher.get_fio}}{% endif %}', '{{mark.feedback}}', '{{mark.pub_date}}')"
+                                        {% else %}
+                                        onclick="openMarkEditModal('{{mark.value}}', {{mark.id}}, '{{student.get_fio}}', '{{mark.feedback}}', '{{mark.pub_date}}')"
+                                        {% endif %}
+                                        class="mark pointer{% if mark.feedback %} show-more{% endif %}" style="color: {% if mark.value in "2345"|make_list %}var(--{{mark.value}}-color){% endif %}"
+                                    >
                                         {{mark.value}}
                                     </span>
                                 {% endif %}
@@ -53,7 +58,7 @@
             <input type="hidden" name="student" value="">
             <input type="hidden" name="teacher" value="{{request.user.id}}">
             <input type="hidden" name="subject" value="{{subject.id}}">
-            <ul id="vals-list">
+            <ul class="vals-list">
                 {% for val in "2345H/+."|make_list  %}
                 <li>
                     <input required name="value" type="radio" value="{{val}}" id="val_{{val}}">
@@ -82,6 +87,30 @@
     </div>
 </div>
 
+<div onclick="closeModal('#edit-mark-modal')" class="modal-window" id="edit-mark-modal">
+    <form onclick="event.stopPropagation()" method="post" class="card" action="{% url "marks:editmark" students_unit.id subject.id %}">
+        <div>
+            <h2>Редактирование</h2>
+            <span class="hint"></span>
+        </div>
+        <div class="flex">
+            {% csrf_token %}
+            <input type="hidden" name="id" value="">
+            <ul class="vals-list">
+                {% for val in "2345H/+."|make_list  %}
+                <li>
+                    <input required name="value" type="radio" value="{{val}}" id="edit_val_{{val}}">
+                    <label style="--module-bg-color: {% if val in "2345"|make_list %}var(--{{val}}-color){% else %}var(--text-ultralight-color){% endif %}" class="mark" for="edit_val_{{val}}">{{val}}</label>
+                </li>
+                {% endfor %}
+            </ul>
+            <textarea maxlength="500" placeholder="Комментарий к оценке" name="feedback" class="feedback"></textarea>
+            <span class="date"></span>
+        </div>
+        <input class="button" type="submit" value="Редактировать оценку">
+    </form>
+</div>
+
 {% block page_scripts %}
 <script src="{% static "users/js/gsap.min.js" %}"></script>
 <script>
@@ -96,6 +125,7 @@
 
     markAddModal = document.getElementById('add-mark-modal')
     markShowModal = document.getElementById('show-mark-modal')
+    markEditModal = document.getElementById('edit-mark-modal')
 
     function openMarkAddModal(studentId, studentFio) {
         openModal('#add-mark-modal')
@@ -107,20 +137,41 @@
         openModal('#show-mark-modal')
         markShowModal.querySelector(".hint").innerHTML = studentFio 
         markShowModal.querySelector(".mark").innerHTML = mark 
-        markShowModal.querySelector(".feedback").innerHTML = markFeedback 
+        markShowModal.querySelector(".mark").style = !['H', '/', '.', '+'].includes(mark) ? `color: var(--${mark}-color)` : ''
+        markShowModal.querySelector(".feedback").innerHTML = markFeedback ? markFeedback : 'Оценка без комментария'
         markShowModal.querySelector(".date").innerHTML = markDate 
     }
 
+    function openMarkEditModal(mark, markId, studentFio, markFeedback, markDate) {
+        openModal('#edit-mark-modal')
+        markEditModal.querySelector("input[name='id']").value = markId 
+        markEditModal.querySelector(".feedback").innerHTML = markFeedback 
+        markEditModal.querySelector(".hint").innerHTML = studentFio 
+        markEditModal.querySelector(".date").innerHTML = markDate 
+        
+        markEditModal.querySelectorAll("input[name='value']").forEach((el) => {
+            if (el.value == mark) {
+                el.checked = true
+            }
+        })
+    }
+
+    let isAnimating = false
+
     function openModal(modalSelector) {
-        tl = gsap.timeline({defaults: {duration: 0.5}})
-        tl.to(modalSelector, {zIndex: 3, duration: 0.01})
-        tl.to(modalSelector, {opacity: 1}, "<+=0.1")
+        if (!isAnimating) {
+            tl = gsap.timeline({onStart: () => {isAnimating = true}, onComplete: () => {isAnimating = false}, defaults: {duration: 0.5}})
+            tl.to(modalSelector, {zIndex: 3, duration: 0.01})
+            tl.to(modalSelector, {opacity: 1}, "<+=0.1")
+        }
     }
 
     function closeModal(modalSelector) {
-        tl = gsap.timeline({defaults: {duration: 0.3}})
-        tl.to(modalSelector, {opacity: 0})
-        tl.to(modalSelector, {zIndex: -1, duration: 0.01})
+        if (!isAnimating) {
+            tl = gsap.timeline({onStart: () => {isAnimating = true}, onComplete: () => {isAnimating = false}, defaults: {duration: 0.3}})
+            tl.to(modalSelector, {opacity: 0})
+            tl.to(modalSelector, {zIndex: -1, duration: 0.01})
+        }
     }
 </script>
 {% endblock page_scripts %}

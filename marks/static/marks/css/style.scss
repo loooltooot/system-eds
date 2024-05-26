@@ -218,6 +218,10 @@ table {
     font-family: 'Margarine';
     color: var(--secondary-color);
 
+    &.pointer {
+        cursor: pointer;
+    }
+
     &.show-more {
         cursor: pointer;
         position: relative;

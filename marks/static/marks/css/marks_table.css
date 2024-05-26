@@ -29,20 +29,20 @@ table.student-table td:nth-child(2) {
   color: var(--primary-color);
 }
 
-#vals-list {
+.vals-list {
   column-gap: 15px;
   row-gap: 15px;
   margin-inline: auto;
 }
-#vals-list input {
+.vals-list input {
   position: absolute;
   left: -100vw;
 }
-#vals-list input:checked + label {
+.vals-list input:checked + label {
   color: var(--bg-light-color);
   z-index: 2;
 }
-#vals-list input:checked + label::before {
+.vals-list input:checked + label::before {
   width: 40px;
   height: 40px;
   position: absolute;
@@ -54,10 +54,10 @@ table.student-table td:nth-child(2) {
   z-index: -1;
   opacity: 1;
 }
-#vals-list input:focus {
+.vals-list input:focus {
   outline: none;
 }
-#vals-list label {
+.vals-list label {
   position: relative;
   border-radius: 50%;
   color: var(--text-ultralight-color);
@@ -67,7 +67,7 @@ table.student-table td:nth-child(2) {
   cursor: pointer;
   user-select: none;
 }
-#vals-list label::before {
+.vals-list label::before {
   content: "";
   opacity: 0;
   transition: 0.3s ease;
@@ -99,6 +99,10 @@ table.student-table td:nth-child(2) {
   word-break: break-word;
 }
 #show-mark-modal .date {
+  color: var(--text-ultralight-color);
+}
+
+#edit-mark-modal .date {
   color: var(--text-ultralight-color);
 }
 
