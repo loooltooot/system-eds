@@ -199,6 +199,14 @@ section {
   background-color: var(--primary-shade-color);
 }
 
+.tiny-button {
+  cursor: pointer;
+  color: var(--primary-color);
+}
+.tiny-button:hover {
+  color: var(--primary-shade-color);
+}
+
 .flex {
   display: flex;
   flex-direction: column;

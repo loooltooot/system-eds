@@ -45,7 +45,7 @@ class EditMarkView(LoginRequiredMixin, PermissionRequiredMixin, AdminRedirectMix
         students_unit = get_object_or_404(StudentsUnit, pk=pk)
         subject = get_object_or_404(Subject, pk=sub_pk)
         mark = get_object_or_404(Mark, pk=request.POST['id'])
-        new_feedback = request.POST['feedback']
+        new_feedback = request.POST['feedback'].strip()
         new_value = request.POST['value']
 
         if not Appointment.objects.filter(teacher=request.user, subject=subject, students_unit=students_unit).exists():

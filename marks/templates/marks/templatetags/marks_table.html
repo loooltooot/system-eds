@@ -28,7 +28,7 @@
                                 {% if date == mark.pub_date %}
                                     <span 
                                         {% if mark.value in "2345H"|make_list or is_student %}
-                                        onclick="openMarkShowModal('{{mark.value}}', '{% if not is_student %}{{student.get_fio}}{% else %}{{mark.teacher.get_fio}}{% endif %}', '{{mark.feedback}}', '{{mark.pub_date}}')"
+                                        onclick="openMarkShowModal('{{mark.value}}', {{mark.id}}, '{% if not is_student %}{{student.get_fio}}{% else %}{{mark.teacher.get_fio}}{% endif %}', '{{mark.feedback}}', '{{mark.pub_date}}')"
                                         {% else %}
                                         onclick="openMarkEditModal('{{mark.value}}', {{mark.id}}, '{{student.get_fio}}', '{{mark.feedback}}', '{{mark.pub_date}}')"
                                         {% endif %}
@@ -82,11 +82,22 @@
         </div>
         <div class="flex">
             <p class="feedback"></p>
+            {% if not is_student %}
+                <div class="tiny-button">Изменить комментарий *</div>
+                <form style="display: none" method="post" class="card" action="{% url "marks:editmark" students_unit.id subject.id %}">
+                    {% csrf_token %}
+                    <input type="hidden" name="value" value="">
+                    <input type="hidden" name="id" value="">
+                    <textarea maxlength="500" placeholder="Комментарий к оценке" name="feedback" class="edit_feedback"></textarea>
+                    <input class="button" type="submit" value="Изменить комментарий">
+                </form>
+            {% endif %}
             <span class="date"></span>
         </div>
     </div>
 </div>
 
+{% if not is_student %}
 <div onclick="closeModal('#edit-mark-modal')" class="modal-window" id="edit-mark-modal">
     <form onclick="event.stopPropagation()" method="post" class="card" action="{% url "marks:editmark" students_unit.id subject.id %}">
         <div>
@@ -110,6 +121,7 @@
         <input class="button" type="submit" value="Редактировать оценку">
     </form>
 </div>
+{% endif %}
 
 {% block page_scripts %}
 <script src="{% static "users/js/gsap.min.js" %}"></script>
@@ -127,34 +139,50 @@
     markShowModal = document.getElementById('show-mark-modal')
     markEditModal = document.getElementById('edit-mark-modal')
 
-    function openMarkAddModal(studentId, studentFio) {
-        openModal('#add-mark-modal')
-        markAddModal.querySelector("input[name='student']").value = studentId 
-        markAddModal.querySelector(".hint").innerHTML = studentFio 
-    }
-
-    function openMarkShowModal(mark, studentFio, markFeedback, markDate) {
+    
+    function openMarkShowModal(mark, markId, studentFio, markFeedback, markDate) {
         openModal('#show-mark-modal')
-        markShowModal.querySelector(".hint").innerHTML = studentFio 
-        markShowModal.querySelector(".mark").innerHTML = mark 
-        markShowModal.querySelector(".mark").style = !['H', '/', '.', '+'].includes(mark) ? `color: var(--${mark}-color)` : ''
-        markShowModal.querySelector(".feedback").innerHTML = markFeedback ? markFeedback : 'Оценка без комментария'
-        markShowModal.querySelector(".date").innerHTML = markDate 
-    }
-
-    function openMarkEditModal(mark, markId, studentFio, markFeedback, markDate) {
-        openModal('#edit-mark-modal')
-        markEditModal.querySelector("input[name='id']").value = markId 
-        markEditModal.querySelector(".feedback").innerHTML = markFeedback 
-        markEditModal.querySelector(".hint").innerHTML = studentFio 
-        markEditModal.querySelector(".date").innerHTML = markDate 
+        {% if not is_student %}
+            markShowModal.querySelector('.tiny-button').style.display = 'block'
+            markShowModal.querySelector('.feedback').style.display = 'block'
+            markShowModal.querySelector('form').style.display = 'none'
+            markShowModal.querySelector("input[name='id']").value = markId 
+            markShowModal.querySelector("input[name='value']").value = mark 
+            markShowModal.querySelector(".edit_feedback").innerHTML = markFeedback ? markFeedback : ''
+            {% endif %}
+            markShowModal.querySelector(".hint").innerHTML = studentFio 
+            markShowModal.querySelector(".mark").innerHTML = mark 
+            markShowModal.querySelector(".mark").style = !['H', '/', '.', '+'].includes(mark) ? `color: var(--${mark}-color)` : ''
+            markShowModal.querySelector(".feedback").innerHTML = markFeedback ? markFeedback : 'Оценка без комментария'
+            markShowModal.querySelector(".date").innerHTML = markDate 
+        }
         
-        markEditModal.querySelectorAll("input[name='value']").forEach((el) => {
-            if (el.value == mark) {
-                el.checked = true
-            }
+    {% if not is_student %}
+        function openMarkAddModal(studentId, studentFio) {
+            openModal('#add-mark-modal')
+            markAddModal.querySelector("input[name='student']").value = studentId 
+            markAddModal.querySelector(".hint").innerHTML = studentFio 
+        }
+
+        function openMarkEditModal(mark, markId, studentFio, markFeedback, markDate) {
+            openModal('#edit-mark-modal')
+            markEditModal.querySelector("input[name='id']").value = markId 
+            markEditModal.querySelector(".feedback").innerHTML = markFeedback 
+            markEditModal.querySelector(".hint").innerHTML = studentFio 
+            markEditModal.querySelector(".date").innerHTML = markDate 
+            
+            markEditModal.querySelectorAll("input[name='value']").forEach((el) => {
+                if (el.value == mark) {
+                    el.checked = true
+                }
+            })
+        }
+        markShowModal.querySelector('.tiny-button').addEventListener('click', () => {
+            markShowModal.querySelector('.tiny-button').style.display = 'none'
+            markShowModal.querySelector('.feedback').style.display = 'none'
+            markShowModal.querySelector('form').style.display = 'flex'
         })
-    }
+    {% endif %}
 
     let isAnimating = false
 
