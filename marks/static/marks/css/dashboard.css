@@ -33,4 +33,13 @@
   top: -15.5px;
 }
 
+@media screen and (max-width: 500px) {
+  .subjects-list li {
+    width: 100%;
+  }
+  .subjects-list .card {
+    min-width: 100%;
+  }
+}
+
 /*# sourceMappingURL=dashboard.css.map */

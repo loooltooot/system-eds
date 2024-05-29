@@ -8,7 +8,7 @@
 
 body {
     min-height: 100vh;
-    padding: 40px 0 0;
+    padding: 0;
     background-color: var(--bg-color);
     box-sizing: border-box;
     display: flex;
@@ -17,7 +17,9 @@ body {
     row-gap: 150px;
 
     #top {
-        padding-inline: 60px;
+        padding-top: 40px;
+        padding-inline: var(--inline-padding);
+        box-sizing: border-box;
     }
 }
 
@@ -285,6 +287,7 @@ td {
     justify-content: center;
     opacity: 0;
     z-index: -1;
+    box-sizing: border-box;
 
     &>:is(form, div) {
         row-gap: 50px;
@@ -328,9 +331,14 @@ td {
 
 footer {
     background-color: var(--bg-light-color);
-    padding: 30px 60px;
+    padding-inline: var(--inline-padding);
+    padding-block: 30px;
     display: flex;
     justify-content: space-between;
+
+    .footer-image {
+        width: 220px;
+    }
 
     #info {
         font-weight: 700;
@@ -344,6 +352,65 @@ footer {
 
         &:hover {
             filter: none;
+        }
+    }
+}
+
+@media screen and (max-width: 500px) {
+    body {
+        row-gap: 50px;
+    }
+
+    body #top {
+        overflow-x: clip;
+        row-gap: 50px;
+        padding-top: 30px;
+        min-height: calc(100vh - 50px);
+    }
+
+    .card {
+        padding: 25px;
+        max-width: 100%;
+    }
+
+    .modal-window,
+    .card {
+        div.flex {
+            row-gap: 20px;
+        }
+    }
+
+    .modal-window {
+        padding-inline: var(--inline-padding);
+
+        :is(form, div) {
+            row-gap: 45px;
+        }
+    }
+
+    .profile .name {
+        span {
+            display: none;
+        }
+    }
+
+    footer {
+        padding-block: 30px;
+
+        .footer-image {
+            width: 167px;
+        }
+
+        #info {
+            flex-wrap: wrap;
+            row-gap: 2px;
+            margin-top: 20px;
+
+            a,
+            span {
+                color: var(--text-light-color);
+                font-size: var(--xs-font-size);
+            }
         }
     }
 }

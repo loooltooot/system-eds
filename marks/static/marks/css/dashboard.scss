@@ -43,3 +43,15 @@
         }
     }
 }
+
+@media screen and (max-width: 500px) {
+    .subjects-list {
+        li {
+            width: 100%;
+        }
+
+        .card {
+            min-width: 100%;
+        }
+    }
+}

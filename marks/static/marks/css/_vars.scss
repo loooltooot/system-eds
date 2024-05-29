@@ -19,4 +19,17 @@
     --base-font-size: 16px;
     --s-font-size: 20px;
     --m-font-size: 40px;
+
+    --inline-padding: 60px;
+}
+
+@media screen and (max-width: 500px) {
+    :root {
+        --xs-font-size: 12px;
+        --base-font-size: 14px;
+        --s-font-size: 16px;
+        --m-font-size: 30px;
+
+        --inline-padding: 30px;
+    }
 }
