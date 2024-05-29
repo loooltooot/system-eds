@@ -11,11 +11,11 @@
         <div class="card card-small profile">
             <div class="name">
                 <span>{{request.user.get_short_name}}</span>
-                <img src="{% static "users/imgs/default_user.png" %}" alt="">
+                <img src="{% if request.user.photo %}{{request.user.photo}}{% else %}{% static "users/imgs/default_user.png" %}{% endif %}" alt="Фото профиля">
             </div>
             <ul class="options">
                 <li>
-                    <a href="{% url "users:logout" %}">Выйти</a>
+                    <a onclick="event.stopPropagation()" href="{% url "users:logout" %}">Выйти</a>
                 </li>
             </ul>
         </div>
@@ -29,3 +29,16 @@
     {% block footer %}{% endblock footer %}
 </footer>
 {% endblock body %}
+
+{% block page_scripts %}
+<script src="{% static "users/js/gsap.min.js" %}"></script>
+<script>
+    profile = document.querySelector('.profile')
+    let profileIsOpened = false
+
+    profile.addEventListener('click', () => {
+        gsap.to('.profile', {height: profileIsOpened ? '50px' : '80px', duration: 0.3})
+        profileIsOpened = !profileIsOpened
+    })
+</script>
+{% endblock page_scripts %}

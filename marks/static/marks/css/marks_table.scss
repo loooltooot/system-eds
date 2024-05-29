@@ -34,6 +34,17 @@ table {
 .fullname {
     cursor: pointer;
 
+    &>div {
+        display: flex;
+        align-items: center;
+        column-gap: 15px;
+
+        img {
+            width: 30px;
+            height: 30px;
+        }
+    }
+
     &:hover {
         color: var(--primary-color);
     }

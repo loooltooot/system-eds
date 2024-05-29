@@ -320,16 +320,20 @@ td .mark_form {
 
 #top header {
   display: flex;
-  justify-content: space-between;
+  position: relative;
 }
 #top header #logo {
   width: 168px;
 }
 #top header .profile.card {
-  height: fit-content;
+  position: absolute;
+  right: 0;
+  top: 0;
+  height: 50px;
   padding: 10px 20px;
   row-gap: 10px;
   cursor: pointer;
+  overflow: hidden;
 }
 
 /*# sourceMappingURL=style.css.map */

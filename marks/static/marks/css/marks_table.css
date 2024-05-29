@@ -25,6 +25,15 @@ table.student-table td:nth-child(2) {
 .fullname {
   cursor: pointer;
 }
+.fullname > div {
+  display: flex;
+  align-items: center;
+  column-gap: 15px;
+}
+.fullname > div img {
+  width: 30px;
+  height: 30px;
+}
 .fullname:hover {
   color: var(--primary-color);
 }
