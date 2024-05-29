@@ -340,6 +340,12 @@ td .mark_form {
   overflow: hidden;
 }
 
+.profile-picture {
+  width: 30px;
+  height: 30px;
+  border-radius: 10px;
+}
+
 footer {
   background-color: var(--bg-light-color);
   padding: 30px 60px;

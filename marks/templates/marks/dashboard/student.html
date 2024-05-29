@@ -13,7 +13,7 @@
                 <p>{{appointment.subject.description}}</p>
                 {% endif %}
                 <div class="name">
-                    <img src="{% static "users/imgs/default_user.png" %}" alt="">
+                    <img class="profile-picture" src="{% if appointment.teacher.photo %}{{appointment.teacher.photo.url}}{% else %}{% static "users/imgs/default_user.png" %}{% endif %}" alt="Фото профиля">
                     <span>{{appointment.teacher}}</span>
                 </div>
                 {% average_mark_inclusion appointment.subject %}

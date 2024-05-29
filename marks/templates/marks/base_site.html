@@ -11,7 +11,7 @@
         <div class="card card-small profile">
             <div class="name">
                 <span>{{request.user.get_short_name}}</span>
-                <img src="{% if request.user.photo %}{{request.user.photo}}{% else %}{% static "users/imgs/default_user.png" %}{% endif %}" alt="Фото профиля">
+                <img class="profile-picture" src="{% if request.user.photo %}{{request.user.photo.url}}{% else %}{% static "users/imgs/default_user.png" %}{% endif %}" alt="Фото профиля">
             </div>
             <ul class="options">
                 <li>

@@ -22,7 +22,7 @@
                     <td>{{forloop.counter}}</td>
                     {% if not is_student|default:False %}<td class="fullname" onclick="openMarkAddModal({{student.id}}, '{{student.get_fio}}')">
                         <div>
-                            <img src="{% if student.photo %}{{student.photo}}{% else %}{% static "users/imgs/default_user.png" %}{% endif %}" alt="Фото профиля">
+                            <img class="profile-picture" src="{% if student.photo %}{{student.photo.url}}{% else %}{% static "users/imgs/default_user.png" %}{% endif %}" alt="Фото профиля">
                             <span>{{student.get_fio}}</span>
                         </div>
                     </td>{% endif %}
