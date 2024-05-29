@@ -26,7 +26,17 @@
     </main>
 </div>
 <footer>
-    {% block footer %}{% endblock footer %}
+    {% block footer %}
+    <div>
+        <img src="{% static "marks/black_logo.svg" %}" alt="Система ЭДС">
+        <div id="info">
+            <span>2024 | MIT лицензия |</span><a href="https://loooltooot.github.io">© Эмир Закревский</a><span>|</span><a href="https://pkas58.ru/">ГАПОУ ПО “Пензенский колледж архитектуры и строительства”</a>
+        </div>
+    </div>
+    <a id="github" href="https://github.com/loooltooot/system-eds">
+        <img src="{% static "marks/gh.svg" %}" alt="ГитХаб">
+    </a>
+    {% endblock footer %}
 </footer>
 {% endblock body %}
 

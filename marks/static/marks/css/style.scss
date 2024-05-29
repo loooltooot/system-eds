@@ -8,12 +8,17 @@
 
 body {
     min-height: 100vh;
-    padding: 40px 60px 0;
+    padding: 40px 0 0;
     background-color: var(--bg-color);
     box-sizing: border-box;
     display: flex;
     flex-direction: column;
     justify-content: space-between;
+    row-gap: 150px;
+
+    #top {
+        padding-inline: 60px;
+    }
 }
 
 img,
@@ -312,5 +317,27 @@ td {
         row-gap: 10px;
         cursor: pointer;
         overflow: hidden;
+    }
+}
+
+footer {
+    background-color: var(--bg-light-color);
+    padding: 30px 60px;
+    display: flex;
+    justify-content: space-between;
+
+    #info {
+        font-weight: 700;
+        display: flex;
+        column-gap: 5px;
+        margin-top: 12px;
+    }
+
+    #github {
+        filter: brightness(0);
+
+        &:hover {
+            filter: none;
+        }
     }
 }
