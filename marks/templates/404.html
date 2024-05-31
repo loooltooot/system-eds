@@ -2,7 +2,16 @@
 
 {% block body %}
 <main>
-    <h2>404</h2>
-    <p>Страница не найдена</p>
+    <div class="card">
+        <h2>404</h2>
+        <p>Страница не найдена</p>  
+        <a href="{% url "marks:index" %}" class="button">На главную</a>
+    </div>
 </main>
+<style>
+    body {
+        justify-content: center;
+        align-items: center;
+    }
+</style>
 {% endblock body %}
