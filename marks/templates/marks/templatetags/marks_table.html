@@ -60,6 +60,7 @@
         </div>
         <div class="flex">
             {% csrf_token %}
+            <input type="hidden" name="appointment_id" value="">
             <input type="hidden" name="student" value="">
             <input type="hidden" name="teacher" value="{{request.user.id}}">
             <input type="hidden" name="subject" value="{{subject.id}}">

@@ -2,7 +2,6 @@ from django.views import generic, View
 from django.contrib.auth.mixins import LoginRequiredMixin, PermissionRequiredMixin
 from django.shortcuts import render, get_object_or_404, redirect
 from django.http import HttpResponseBadRequest, HttpResponseForbidden
-from datetime import datetime
 
 from .models import Appointment, StudentsUnit, Subject, Mark
 from .mixins import AdminRedirectMixin

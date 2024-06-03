@@ -75,11 +75,7 @@ class Mark(models.Model):
     ]
 
     value = models.CharField('оценка', max_length=2, choices=VALUES_CHOICES)
-    subject = models.ForeignKey(Subject, on_delete=models.PROTECT, verbose_name='предмет')
-    teacher = models.ForeignKey(
-        settings.AUTH_USER_MODEL, on_delete=models.PROTECT, 
-        related_name='set_marks', verbose_name='учитель', limit_choices_to={'groups__name': 'Преподаватели'}
-    )
+    appointment = models.ForeignKey(Appointment, on_delete=models.PROTECT, verbose_name='предмет')
     student = models.ForeignKey(
         settings.AUTH_USER_MODEL, on_delete=models.PROTECT, 
         related_name='received_marks', verbose_name='студент', limit_choices_to={'groups__name': 'Студенты'}

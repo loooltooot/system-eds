@@ -12,11 +12,10 @@ admin.AdminSite.site_header = 'Система ЭДС'
 
 @admin.register(Mark)
 class MarkAdmin(admin.ModelAdmin):
-    list_display = ['value', 'subject', 'teacher', 'student', 'student_unit', 'pub_date']
-    list_filter = ['pub_date', ('subject', admin.RelatedOnlyFieldListFilter), ('student__students_unit', admin.RelatedOnlyFieldListFilter)]
+    list_display = ['value', 'appointment', 'student', 'student_unit', 'pub_date']
+    list_filter = ['pub_date', ('appointment', admin.RelatedOnlyFieldListFilter), ('student__students_unit', admin.RelatedOnlyFieldListFilter)]
     search_fields = [
-        'subject__name', 'student__students_unit__name', 'student__surname', 'student__name', 'student__patronymic',
-        'teacher__surname', 'teacher__name', 'teacher__patronymic',
+        'student__students_unit__name', 'student__surname', 'student__name', 'student__patronymic',
     ]
     ordering = ['-pub_date']
 
