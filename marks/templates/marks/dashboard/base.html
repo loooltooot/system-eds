@@ -4,3 +4,29 @@
 {% block page_styles %}
 <link rel="stylesheet" href="{% static "marks/css/dashboard.css" %}">
 {% endblock page_styles %}
+
+{% block page_scripts %}
+<script>
+    form = document.getElementById('course-selection-form')
+    inputs = form.querySelectorAll('input')
+    inputs.forEach((input) => {
+        label = form.querySelector(`label[for="${input.id}"]`)
+        if (label) {
+            label.addEventListener('mousedown', () => {
+                if (input.checked) {
+                    input.wasChecked = true
+                } else {
+                    input.wasChecked = false
+                }
+            })
+    
+            input.addEventListener('click', () => {
+                if (input.wasChecked) {
+                    input.checked = false
+                }
+                form.submit()
+            })
+        }
+    })
+</script>
+{% endblock page_scripts %}

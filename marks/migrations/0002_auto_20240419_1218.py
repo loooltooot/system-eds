@@ -55,9 +55,15 @@ def seed_users(apps, scheme_editor):
     User.objects.create_superuser(surname='Администраторов', name='Администратор', phone='+79648686553', password='lolita').groups.set([administrators])
     User.objects.create_user(surname='Майорова', name='Ольга', patronymic='Анатольевна', phone='+79648686554', password='lolita', is_staff=True).groups.set([administrators])
 
-    Appointment.objects.create(students_unit=my_group, subject=s1, teacher=t1)
-    Appointment.objects.create(students_unit=my_group, subject=s2, teacher=t2)
-    Appointment.objects.create(students_unit=my_group, subject=s3, teacher=t3)
+    Appointment.objects.create(students_unit=my_group, subject=s1, teacher=t1, course=1, is_first_term=True)
+    Appointment.objects.create(students_unit=my_group, subject=s2, teacher=t2, course=1, is_first_term=True)
+    Appointment.objects.create(students_unit=my_group, subject=s3, teacher=t3, course=1, is_first_term=False)
+    Appointment.objects.create(students_unit=my_group, subject=s2, teacher=t1, course=2, is_first_term=False)
+    Appointment.objects.create(students_unit=my_group, subject=s3, teacher=t2, course=2, is_first_term=False)
+    Appointment.objects.create(students_unit=my_group, subject=s1, teacher=t3, course=2, is_first_term=True)
+    Appointment.objects.create(students_unit=my_group, subject=s3, teacher=t1, course=3, is_first_term=True)
+    Appointment.objects.create(students_unit=my_group, subject=s1, teacher=t2, course=3, is_first_term=False)
+    Appointment.objects.create(students_unit=my_group, subject=s2, teacher=t3, course=3, is_first_term=True)
 
     for app_config in apps.get_app_configs():
         app_config.models_module = True

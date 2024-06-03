@@ -19,6 +19,38 @@ class IndexView(LoginRequiredMixin, AdminRedirectMixin, View):
             template = 'marks/dashboard/teacher.html'
             context['related_appointments'] = Appointment.objects.filter(teacher=request.user)
 
+        context['courses'] = set([appointment.course for appointment in context['related_appointments']])
+        context['course'] = request.session.get('course', None)
+        context['term'] = request.session.get('term', None)
+
+        if context['course']:
+            context['related_appointments'] = context['related_appointments'].filter(course=context['course'])
+
+        if context['term']:
+            context['related_appointments'] = context['related_appointments'].filter(is_first_term=context['term'])
+
+        return render(request, template, context)
+    
+    def post(self, request, *args, **kwargs):
+        template = 'marks/dashboard/student.html'
+        context = {'related_appointments': Appointment.objects.filter(students_unit=request.user.students_unit)}
+
+        if request.user.groups.filter(name='Преподаватели').exists():
+            template = 'marks/dashboard/teacher.html'
+            context['related_appointments'] = Appointment.objects.filter(teacher=request.user)
+
+        context['courses'] = set([appointment.course for appointment in context['related_appointments']])
+        context['course'] = request.POST.get('course', None) 
+        context['term'] = request.POST.get('term', None)
+        request.session['course'] = context['course']
+        request.session['term'] = context['term']
+
+        if context['course']:
+            context['related_appointments'] = context['related_appointments'].filter(course=context['course'])
+
+        if context['term']:
+            context['related_appointments'] = context['related_appointments'].filter(is_first_term=context['term'])
+
         return render(request, template, context)
     
 class AddMarkView(LoginRequiredMixin, PermissionRequiredMixin, AdminRedirectMixin, View):

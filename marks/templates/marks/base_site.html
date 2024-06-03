@@ -38,9 +38,6 @@
     </a>
     {% endblock footer %}
 </footer>
-{% endblock body %}
-
-{% block page_scripts %}
 <script src="{% static "users/js/gsap.min.js" %}"></script>
 <script>
     profile = document.querySelector('.profile')
@@ -51,4 +48,6 @@
         profileIsOpened = !profileIsOpened
     })
 </script>
-{% endblock page_scripts %}
+{% endblock body %}
+
+{% block page_scripts %}{% endblock page_scripts %}

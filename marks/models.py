@@ -33,6 +33,8 @@ class Appointment(models.Model):
         verbose_name='преподаватель', limit_choices_to={'groups__name': 'Преподаватели'}
     )
     pub_date = models.DateTimeField('дата назначения', auto_now_add=True)
+    course = models.PositiveSmallIntegerField('курс')
+    is_first_term = models.BooleanField('первое полугодие?')
     
     class Meta:
         verbose_name = 'назначение преподавателя'
@@ -83,6 +85,7 @@ class Mark(models.Model):
         related_name='received_marks', verbose_name='студент', limit_choices_to={'groups__name': 'Студенты'}
     )
     feedback = models.TextField('обратная связь', blank=True)
+    is_final = models.BooleanField('итоговая оценка?')
     pub_date = models.DateField('дата оценивания')
 
     class Meta:

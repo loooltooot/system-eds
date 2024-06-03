@@ -135,6 +135,11 @@ section {
     row-gap: 25px;
 }
 
+.section-header {
+    display: flex;
+    column-gap: 30px;
+}
+
 .card {
     background-color: var(--bg-light-color);
     border-radius: 30px;
