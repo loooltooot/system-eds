@@ -256,6 +256,24 @@ table {
             z-index: 1;
         }
     }
+
+    &.final-mark {
+        cursor: pointer;
+        position: relative;
+
+        &::before {
+            content: "";
+            position: absolute;
+            left: 50%;
+            top: 50%;
+            transform: translate(-50%, -50%);
+            border-radius: 100%;
+            border: 1px solid var(--secondary-color);
+            width: 1.3rem;
+            height: 1.3rem;
+            z-index: 1;
+        }
+    }
 }
 
 td {

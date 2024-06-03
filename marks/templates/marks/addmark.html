@@ -6,13 +6,21 @@
     <div>
         <h2>
             {% if is_student %}
-            Успеваемость по предмету {{subject}}
+            Успеваемость по предмету {{appointment.subject}}
             {% else %}
-            Успеваемость студентов группы {{students_unit}}
+            Успеваемость студентов группы {{appointment.students_unit}}
             {% endif %}
         </h2>
-        {% if not is_student %}<span>Предмет: <span>{{subject}}</span></span>{% endif %}
+        {% if not is_student %}
+            <span>Предмет: 
+                <span>{{appointment.subject}}</span> | Курс: <span>{{appointment.course}}</span> | Семестр: <span>{{appointment.is_first_term|yesno:'1,2'}}</span>
+            </span>
+            {% else %}
+            <span>Курс: 
+                <span>{{appointment.course}}</span> | Семестр: <span>{{appointment.is_first_term|yesno:'1,2'}}</span>
+            </span>
+        {% endif %}
     </div>
-    {% marks_table students_unit subject is_student|default:False %}
+    {% marks_table appointment is_student|default:False %}
 </section>
 {% endblock content %}

@@ -43,7 +43,7 @@ class Appointment(models.Model):
     def students_with_no_marks(self):
         count = 0
         for student in self.students_unit.user_set.all():
-            student_marks = student.received_marks.filter(subject=self.subject)
+            student_marks = student.received_marks.filter(appointment=self)
             if student_marks.exists():
                 int_marks = []
                 for mark in student_marks:

@@ -5,7 +5,7 @@ from decimal import getcontext, ROUND_HALF_DOWN, Decimal
 register = template.Library()
 
 @register.inclusion_tag('marks/templatetags/average_mark_inclusion.html', takes_context=True)
-def average_mark_inclusion(context, subject):
+def average_mark_inclusion(context, appointment):
     decimal_context = getcontext()
     decimal_context.rounding = ROUND_HALF_DOWN
 
@@ -18,7 +18,7 @@ def average_mark_inclusion(context, subject):
 
     module_context = {}
 
-    module_context['average_mark'] = get_average_mark(subject, student=context['request'].user)
+    module_context['average_mark'] = get_average_mark(appointment, student=context['request'].user)
     if module_context['average_mark'] is not None:
         module_context['img_src'] = IMGS[round(Decimal(module_context['average_mark']), 0)]
 

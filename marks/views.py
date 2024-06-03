@@ -55,31 +55,29 @@ class IndexView(LoginRequiredMixin, AdminRedirectMixin, View):
 class AddMarkView(LoginRequiredMixin, PermissionRequiredMixin, AdminRedirectMixin, View):
     permission_required = 'marks.add_mark'
 
-    def post(self, request, pk, sub_pk, *args, **kwargs):
-        students_unit = get_object_or_404(StudentsUnit, pk=pk)
-        subject = get_object_or_404(Subject, pk=sub_pk)
+    def post(self, request, pk, *args, **kwargs):
+        appointment = get_object_or_404(Appointment, pk=pk)
 
-        if not Appointment.objects.filter(teacher=request.user, subject=subject, students_unit=students_unit).exists():
+        if appointment.teacher != request.user:
             return HttpResponseForbidden()
 
         form = MarkForm(request.POST)
         if form.is_valid():
             form.save()
-            return redirect('marks:show', pk=pk, sub_pk=sub_pk)
+            return redirect('marks:show', pk=pk)
         
         return HttpResponseBadRequest()
     
 class EditMarkView(LoginRequiredMixin, PermissionRequiredMixin, AdminRedirectMixin, View):
     permission_required = 'marks.add_mark'
     
-    def post(self, request, pk, sub_pk, *args, **kwargs):
-        students_unit = get_object_or_404(StudentsUnit, pk=pk)
-        subject = get_object_or_404(Subject, pk=sub_pk)
+    def post(self, request, pk, *args, **kwargs):
+        appointment = get_object_or_404(Appointment, pk=pk)
         mark = get_object_or_404(Mark, pk=request.POST['id'])
         new_feedback = request.POST['feedback'].strip()
         new_value = request.POST['value']
 
-        if not Appointment.objects.filter(teacher=request.user, subject=subject, students_unit=students_unit).exists():
+        if appointment.teacher != request.user:
             return HttpResponseForbidden()
 
         if new_value not in ['2', '3', '4', '5', '+', '.', '/', 'H']:
@@ -95,23 +93,22 @@ class EditMarkView(LoginRequiredMixin, PermissionRequiredMixin, AdminRedirectMix
             mark.value = new_value
 
         mark.save()
-        return redirect('marks:show', pk=pk, sub_pk=sub_pk)
+        return redirect('marks:show', pk=pk)
 
 class ShowMarksView(LoginRequiredMixin, AdminRedirectMixin, View):
     template = 'marks/addmark.html'
 
-    def get(self, request, pk, sub_pk, *args, **kwargs):
-        students_unit = get_object_or_404(StudentsUnit, pk=pk)
-        subject = get_object_or_404(Subject, pk=sub_pk)
-        context = {'students_unit': students_unit, 'subject': subject}
+    def get(self, request, pk, *args, **kwargs):
+        appointment = get_object_or_404(Appointment, pk=pk)
+        context = {'appointment': appointment}
 
         if request.user.groups.filter(name='Студенты').exists():
-            if not Appointment.objects.filter(students_unit=request.user.students_unit, subject=subject).exists():
+            if appointment.students_unit != request.user.students_unit:
                 return HttpResponseForbidden()
             context['is_student'] = True
 
         if request.user.groups.filter(name='Преподаватели').exists():
-            if not Appointment.objects.filter(teacher=request.user, subject=subject, students_unit=students_unit).exists():
+            if appointment.teacher != request.user:
                 return HttpResponseForbidden()
 
         return render(request, self.template, context)

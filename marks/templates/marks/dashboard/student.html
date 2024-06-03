@@ -34,16 +34,17 @@
     <ul class="subjects-list">
         {% for appointment in related_appointments %}
         <li>
-            <a class="card student flex" href="{% url "marks:show" appointment.students_unit_id appointment.subject_id %}">
+            <a class="card student flex" href="{% url "marks:show" appointment.id %}">
                 <h3>{{appointment.subject}}</h3>
                 {% if appointment.subject.description %}
                 <p>{{appointment.subject.description}}</p>
                 {% endif %}
+                <span>Курс: {{appointment.course}} | Семестр: {{appointment.is_first_term|yesno:'1,2'}}</span>
                 <div class="name">
                     <img class="profile-picture" src="{% if appointment.teacher.photo %}{{appointment.teacher.photo.url}}{% else %}{% static "users/imgs/default_user.png" %}{% endif %}" alt="Фото профиля">
                     <span>{{appointment.teacher}}</span>
                 </div>
-                {% average_mark_inclusion appointment.subject %}
+                {% average_mark_inclusion appointment %}
             </a>
         </li>
         {% endfor %}
