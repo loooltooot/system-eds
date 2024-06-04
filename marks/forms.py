@@ -10,12 +10,16 @@ class MarkForm(forms.ModelForm):
 
     def clean(self):
         cleaned_data = super().clean()
+        value = cleaned_data.get("value")
         student = cleaned_data.get("student")
         is_final = cleaned_data.get("is_final")
         appointment = cleaned_data.get("appointment")
 
         if is_final:
             if student.received_marks.filter(appointment=appointment, is_final=True).exists():
-                raise ValidationError("У этого студента уже есть итоговая оценка.")
+                raise ValidationError("У этого студента уже есть итоговая оценка")
+            
+            if value in ['/', '+', '.', 'H']:
+                raise ValidationError("Невозможно выставить такую итоговую оценку")
 
         return cleaned_data

@@ -39,9 +39,7 @@
                                         onclick="openMarkEditModal('{{mark.value}}', {{mark.id}}, '{{student.get_fio}}', '{{mark.feedback}}', '{{mark.pub_date}}')"
                                         {% endif %}
                                         class="mark pointer{% if mark.feedback %} show-more{% endif %}{% if mark.is_final %} final-mark{% endif %}" style="color: {% if mark.value in "2345"|make_list %}var(--{{mark.value}}-color){% endif %}"
-                                    >
-                                        {{mark.value}}
-                                    </span>
+                                    >{{mark.value}}</span>
                                 {% endif %}
                             {% endfor %}
                         </td>
@@ -129,6 +127,13 @@
             </ul>
             <textarea maxlength="500" placeholder="Комментарий к оценке" name="feedback" class="feedback"></textarea>
             <span class="date"></span>
+            <div class="is-final-checkbox" style="display: none">
+                <label for="is-final">Итоговая оценка за семестр?</label>
+                <input type="checkbox" name="is_final" id="is-final">
+            </div>
+            <div class="is-final-warning errorlist" style="display: none">
+                <span>Учитывайте, что итоговую оценку невозможно изменить</span>
+            </div>
         </div>
         <input class="button" type="submit" value="Редактировать оценку">
     </form>
@@ -169,35 +174,35 @@
     }
         
     {% if not is_student %}
-        isFinalCheckbox = markAddModal.querySelector('.is-final-checkbox')
-        isFinalCheckboxInput = markAddModal.querySelector('.is-final-checkbox input')
-        isFinalWarning = markAddModal.querySelector('.is-final-warning')
+        isFinalCheckboxAdd = markAddModal.querySelector('.is-final-checkbox')
+        isFinalCheckboxAddInput = markAddModal.querySelector('.is-final-checkbox input')
+        isFinalWarningAdd = markAddModal.querySelector('.is-final-warning')
 
         markAddModal.querySelectorAll('.vals-list input').forEach((input) => {
             if ([2, 3, 4, 5].includes(parseInt(input.value, 10))) {
                 input.addEventListener('click', () => {
-                    if (isFinalCheckbox.style.display != 'flex') {
-                        isFinalCheckbox.style.display = 'flex'
+                    if (isFinalCheckboxAdd.style.display != 'flex') {
+                        isFinalCheckboxAdd.style.display = 'flex'
                     }
-                    isFinalCheckboxInput.checked = false
-                    isFinalWarning.style.display = 'none'
+                    isFinalCheckboxAddInput.checked = false
+                    isFinalWarningAdd.style.display = 'none'
                 })
             } else {
                 input.addEventListener('click', () => {
-                    if (isFinalCheckbox.style.display != 'none') {
-                        isFinalCheckboxInput.checked = false
-                        isFinalCheckbox.style.display = 'none'
-                        isFinalWarning.style.display = 'none'
+                    if (isFinalCheckboxAdd.style.display != 'none') {
+                        isFinalCheckboxAddInput.checked = false
+                        isFinalCheckboxAdd.style.display = 'none'
+                        isFinalWarningAdd.style.display = 'none'
                     }
                 })
             }
         })
 
-        isFinalCheckboxInput.addEventListener('change', () => {
-            if (isFinalCheckboxInput.checked) {
-                isFinalWarning.style.display = 'block'
+        isFinalCheckboxAddInput.addEventListener('change', () => {
+            if (isFinalCheckboxAddInput.checked) {
+                isFinalWarningAdd.style.display = 'block'
             } else {
-                isFinalWarning.style.display = 'none'
+                isFinalWarningAdd.style.display = 'none'
             }
         })
 
@@ -209,6 +214,38 @@
             isFinalCheckbox.style.display = 'none'
         }
 
+        isFinalCheckboxEdit = markEditModal.querySelector('.is-final-checkbox')
+        isFinalCheckboxEditInput = markEditModal.querySelector('.is-final-checkbox input')
+        isFinalWarningEdit = markEditModal.querySelector('.is-final-warning')
+
+        markEditModal.querySelectorAll('.vals-list input').forEach((input) => {
+            if ([2, 3, 4, 5].includes(parseInt(input.value, 10))) {
+                input.addEventListener('click', () => {
+                    if (isFinalCheckboxEdit.style.display != 'flex') {
+                        isFinalCheckboxEdit.style.display = 'flex'
+                    }
+                    isFinalCheckboxEditInput.checked = false
+                    isFinalWarningEdit.style.display = 'none'
+                })
+            } else {
+                input.addEventListener('click', () => {
+                    if (isFinalCheckboxEdit.style.display != 'none') {
+                        isFinalCheckboxEditInput.checked = false
+                        isFinalCheckboxEdit.style.display = 'none'
+                        isFinalWarningEdit.style.display = 'none'
+                    }
+                })
+            }
+        })
+
+        isFinalCheckboxEditInput.addEventListener('change', () => {
+            if (isFinalCheckboxEditInput.checked) {
+                isFinalWarningEdit.style.display = 'block'
+            } else {
+                isFinalWarningEdit.style.display = 'none'
+            }
+        })
+
         function openMarkEditModal(mark, markId, studentFio, markFeedback, markDate) {
             openModal('#edit-mark-modal')
             markEditModal.querySelector("input[name='id']").value = markId 
@@ -219,6 +256,9 @@
             markEditModal.querySelectorAll("input[name='value']").forEach((el) => {
                 if (el.value == mark) {
                     el.checked = true
+                    isFinalWarningEdit.style.display = 'none'
+                    isFinalCheckboxEditInput.checked = false
+                    isFinalCheckboxEdit.style.display = 'none'
                 }
             })
         }

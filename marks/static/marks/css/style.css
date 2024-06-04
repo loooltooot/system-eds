@@ -281,6 +281,7 @@ table td.fullname {
 .mark {
   font-family: "Margarine";
   color: var(--secondary-color);
+  width: fit-content;
 }
 .mark.pointer {
   cursor: pointer;
@@ -301,7 +302,7 @@ table td.fullname {
   cursor: pointer;
   position: relative;
 }
-.mark.final-mark::before {
+.mark.final-mark::after {
   content: "";
   position: absolute;
   left: 50%;

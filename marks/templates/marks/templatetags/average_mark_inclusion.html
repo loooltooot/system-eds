@@ -2,7 +2,7 @@
 
 {% if average_mark %}
 <div>
-    <span>Средний балл: </span>
+    <span>{% if not is_final %}Средний балл{% else %}Итоговая оценка{% endif %}: </span>
     <span class="mark">{{average_mark}}</span>
 </div>
 {% if img_src %}

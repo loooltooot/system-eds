@@ -238,6 +238,7 @@ table {
 .mark {
     font-family: 'Margarine';
     color: var(--secondary-color);
+    width: fit-content;
 
     &.pointer {
         cursor: pointer;
@@ -261,7 +262,7 @@ table {
         cursor: pointer;
         position: relative;
 
-        &::before {
+        &::after {
             content: "";
             position: absolute;
             left: 50%;

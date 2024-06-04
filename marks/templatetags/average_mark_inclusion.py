@@ -18,7 +18,7 @@ def average_mark_inclusion(context, appointment):
 
     module_context = {}
 
-    module_context['average_mark'] = get_average_mark(appointment, student=context['request'].user)
+    module_context['average_mark'], module_context['is_final'] = get_average_mark(appointment, student=context['request'].user, return_status=True)
     if module_context['average_mark'] is not None:
         module_context['img_src'] = IMGS[round(Decimal(module_context['average_mark']), 0)]
 

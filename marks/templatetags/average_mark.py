@@ -4,14 +4,22 @@ from marks.models import Mark
 
 register = template.Library()
 
-def get_average_mark(appointment, student):
+def get_average_mark(appointment, student, return_status=False):
     marks = Mark.objects.filter(appointment=appointment, student=student)
     final_mark = Mark.objects.filter(appointment=appointment, student=student, is_final=True)
 
     if final_mark.exists():
-        return final_mark.first().value
+        mark_value = final_mark.first().value
+
+        if return_status:
+            return [mark_value, True]
+
+        return mark_value
     
     if marks.count() == 0:
+        if return_status:
+            return [None, False]
+
         return None
 
     int_marks = []
@@ -25,7 +33,12 @@ def get_average_mark(appointment, student):
     if len(int_marks) == 0:
         return None
 
-    return round(sum(int_marks) / len(int_marks) * 100) / 100
+    average_mark = round(sum(int_marks) / len(int_marks) * 100) / 100
+
+    if return_status:
+        return [average_mark, False]
+
+    return average_mark
 
 @register.inclusion_tag('marks/templatetags/average_mark.html', takes_context=True)
 def average_mark(context, appointment, student=None):

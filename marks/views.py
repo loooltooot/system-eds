@@ -76,6 +76,7 @@ class EditMarkView(LoginRequiredMixin, PermissionRequiredMixin, AdminRedirectMix
         mark = get_object_or_404(Mark, pk=request.POST['id'])
         new_feedback = request.POST['feedback'].strip()
         new_value = request.POST['value']
+        is_final = request.POST['is_final']
 
         if appointment.teacher != request.user:
             return HttpResponseForbidden()
@@ -84,8 +85,14 @@ class EditMarkView(LoginRequiredMixin, PermissionRequiredMixin, AdminRedirectMix
             return HttpResponseBadRequest()
         
         if mark.value not in ['+', '.', '/'] and mark.value != new_value:
-            return HttpResponseForbidden()
+            return HttpResponseBadRequest()
         
+        if is_final: 
+            if new_value not in ['2', '3', '4', '5']:
+                return HttpResponseBadRequest()
+            
+            mark.is_final = True
+
         if new_feedback != mark.feedback:
             mark.feedback = new_feedback
 
