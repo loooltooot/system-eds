@@ -143,14 +143,16 @@
 {% block page_scripts %}
 <script src="{% static "users/js/gsap.min.js" %}"></script>
 <script>
-    document.addEventListener('DOMContentLoaded', function() {
-        const tableContainer = document.querySelector('.table-container');
-        const thead = document.querySelector('thead');
-    
-        tableContainer.addEventListener('scroll', function() {
-            thead.style.top = tableContainer.scrollTop + 'px';
+    if (!(('netscape' in window) && / rv:/.test(navigator.userAgent))) {
+        document.addEventListener('DOMContentLoaded', function() {
+            const tableContainer = document.querySelector('.table-container');
+            const thead = document.querySelector('thead');
+        
+            tableContainer.addEventListener('scroll', function() {
+                thead.style.top = tableContainer.scrollTop + 'px';
+            });
         });
-    });
+    }
 
     markAddModal = document.getElementById('add-mark-modal')
     markShowModal = document.getElementById('show-mark-modal')
