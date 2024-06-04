@@ -40,7 +40,7 @@ class IndexView(LoginRequiredMixin, AdminRedirectMixin, View):
 
         context['courses'] = set([appointment.course for appointment in context['related_appointments']])
         context['course'] = request.POST.get('course', None) 
-        context['term'] = request.POST.get('term', None)
+        context['term'] = request.POST.get('term', None) if context['course'] is not None else None
         request.session['course'] = context['course']
         request.session['term'] = context['term']
 
