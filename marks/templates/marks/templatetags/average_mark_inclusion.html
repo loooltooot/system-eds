@@ -1,7 +1,7 @@
 {% load static %}
 
 {% if average_mark %}
-<div>
+<div class="mark-block">
     <span>{% if not is_final %}Средний балл{% else %}Итоговая оценка{% endif %}: </span>
     <span class="mark">{{average_mark}}</span>
 </div>

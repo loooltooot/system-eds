@@ -50,4 +50,20 @@
         {% endfor %}
     </ul>
 </section>
+<script>
+    cards = document.querySelectorAll('.card.student.flex')
+    cards.forEach((card) => {
+        let hasMarkBlock = false
+
+        for(const child of card.children) {
+            if (child.classList.contains('mark-block')) {
+                hasMarkBlock = child.classList.contains('mark-block')
+            }
+        }
+
+        if (hasMarkBlock) {
+            card.style.paddingRight = '60px'
+        }
+    })
+</script>
 {% endblock content %}
