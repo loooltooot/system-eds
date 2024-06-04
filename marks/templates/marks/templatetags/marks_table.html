@@ -33,7 +33,7 @@
                             {% for mark in marks %}
                                 {% if date == mark.pub_date %}
                                     <span 
-                                        {% if mark.value in "2345H"|make_list or is_student %}
+                                        {% if mark.value in "2345H"|make_list or is_student or h_f_m.status %}
                                         onclick="openMarkShowModal('{{mark.value}}', {{mark.id}}, '{% if not is_student %}{{student.get_fio}}{% else %}{{appointment.teacher.get_fio}}{% endif %}', '{{mark.feedback}}', '{{mark.pub_date}}')"
                                         {% else %}
                                         onclick="openMarkEditModal('{{mark.value}}', {{mark.id}}, '{{student.get_fio}}', '{{mark.feedback}}', '{{mark.pub_date}}')"

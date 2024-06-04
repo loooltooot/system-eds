@@ -74,9 +74,9 @@ class EditMarkView(LoginRequiredMixin, PermissionRequiredMixin, AdminRedirectMix
     def post(self, request, pk, *args, **kwargs):
         appointment = get_object_or_404(Appointment, pk=pk)
         mark = get_object_or_404(Mark, pk=request.POST['id'])
-        new_feedback = request.POST['feedback'].strip()
-        new_value = request.POST['value']
-        is_final = request.POST['is_final']
+        new_feedback = request.POST.get('feedback', mark.feedback).strip()
+        new_value = request.POST.get('value', mark.value)
+        is_final = request.POST.get('is_final', False)
 
         if appointment.teacher != request.user:
             return HttpResponseForbidden()
