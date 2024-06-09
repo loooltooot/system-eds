@@ -89,4 +89,4 @@ class Mark(models.Model):
         verbose_name_plural = 'оценки'
 
     def __str__(self):
-        return f'{self.value} ({self.subject}) {self.student}'.strip()
+        return f'{self.value} ({self.appointment.subject}) {self.student}'.strip()
