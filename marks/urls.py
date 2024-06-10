@@ -5,7 +5,7 @@ from .views import IndexView, AddMarkView, ShowMarksView, EditMarkView
 app_name = 'marks'
 urlpatterns = [
     path('', IndexView.as_view(), name='index'),
-    path('groups/<int:pk>/subjects/<int:sub_pk>/', ShowMarksView.as_view(), name='show'),
-    path('groups/<int:pk>/subjects/<int:sub_pk>/addmark/', AddMarkView.as_view(), name='addmark'),
-    path('groups/<int:pk>/subjects/<int:sub_pk>/editmark/', EditMarkView.as_view(), name='editmark'),
+    path('appointments/<int:pk>/', ShowMarksView.as_view(), name='show'),
+    path('appointments/<int:pk>/addmark/', AddMarkView.as_view(), name='addmark'),
+    path('appointments/<int:pk>/editmark/', EditMarkView.as_view(), name='editmark'),
 ]

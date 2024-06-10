@@ -135,6 +135,11 @@ section {
     row-gap: 25px;
 }
 
+.section-header {
+    display: flex;
+    column-gap: 30px;
+}
+
 .card {
     background-color: var(--bg-light-color);
     border-radius: 30px;
@@ -233,6 +238,7 @@ table {
 .mark {
     font-family: 'Margarine';
     color: var(--secondary-color);
+    width: fit-content;
 
     &.pointer {
         cursor: pointer;
@@ -248,6 +254,24 @@ table {
             right: -8px;
             top: -8px;
             color: var(--primary-shade-color);
+            z-index: 1;
+        }
+    }
+
+    &.final-mark {
+        cursor: pointer;
+        position: relative;
+
+        &::after {
+            content: "";
+            position: absolute;
+            left: 50%;
+            top: 50%;
+            transform: translate(-50%, -50%);
+            border-radius: 100%;
+            border: 1px solid var(--secondary-color);
+            width: 1.3rem;
+            height: 1.3rem;
             z-index: 1;
         }
     }

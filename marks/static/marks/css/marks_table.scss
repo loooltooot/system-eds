@@ -13,6 +13,7 @@ table {
 
     thead {
         position: sticky;
+        top: 0;
         z-index: 2;
     }
 
@@ -149,6 +150,43 @@ table {
 
     textarea {
         height: 100px;
+    }
+}
+
+.is-final-checkbox {
+    display: flex;
+    width: fit-content;
+    margin-inline: auto;
+    column-gap: 10px;
+    align-items: center;
+
+    input {
+        width: 20px;
+        height: 20px;
+    }
+}
+
+.has-final-mark {
+    td:first-child {
+        position: relative;
+
+        &::before {
+            content: "";
+            width: 10px;
+            height: 100%;
+            position: absolute;
+            left: 0;
+            top: 0;
+            background-color: var(--module-color);
+        }
+    }
+
+    .fullname {
+        cursor: auto;
+
+        &:hover {
+            color: var(--text-color)
+        }
     }
 }
 

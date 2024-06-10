@@ -1,16 +1,44 @@
 {% extends "marks/dashboard/base.html" %}
 {% block content %}
 <section class="flex">
-    <h2>Ваши предметы</h1>
+    <div class="section-header">
+        <h2>Ваши предметы</h1>
+        <form id="course-selection-form" action="{% url "marks:index" %}" method="post">
+            {% csrf_token %}
+            <div class="input-radio-selector-wrapper">
+                <ul class="input-radio-selector">
+                    {% for c in courses %}
+                    <li>
+                        <input {% if c|stringformat:'d' == course %}checked{% endif %} type="radio" name="course" value="{{c}}" id="course-{{c}}">
+                        <label for="course-{{c}}">{{c}}</label>
+                    </li>
+                    {% endfor %}
+                </ul>
+                <span>курс</span>
+            </div>
+            {% if course %}
+            <div class="input-radio-selector-wrapper">
+                <div class="input-radio-selector">
+                    <input {% if term == '1' %}checked{% endif %} type="radio" name="term" id="st-term" value="1">
+                    <label for="st-term">1</label>
+                    <input {% if term == '0' %}checked{% endif %} type="radio" name="term" id="nd-term" value="0">
+                    <label for="nd-term">2</label>
+                </div>
+                <span>семестр</span>
+            </div>
+            {% endif %}
+        </form>
+    </div>
     <ul class="subjects-list">
         {% for appointment in related_appointments %}
         <li>
-            <a class="card teacher flex" href="{% url "marks:show" appointment.students_unit_id appointment.subject_id %}">
+            <a class="card teacher flex" href="{% url "marks:show" appointment.id %}">
                 <h3>{{appointment.subject}}</h3>
                 {% if appointment.subject.description %}
                 <p>{{appointment.subject.description}}</p>
                 {% endif %}
                 <span>Группа: {{appointment.students_unit}}</span>
+                <span>Курс: {{appointment.course}} | Семестр: {{appointment.is_first_term|yesno:'1,2'}}</span>
                 <span>Студентов без оценок: <span class="mark">{{appointment.students_with_no_marks}}</span></span>
             </a>
         </li>

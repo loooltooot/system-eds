@@ -17,9 +17,11 @@ def seed_users(apps, scheme_editor):
 
     my_group = StudentsUnit.objects.create(name='20ОА14')
 
-    s1 = Subject.objects.create(name='ПМ 10.1')
-    s2 = Subject.objects.create(name='ПМ 10.2')
-    s3 = Subject.objects.create(name='ПМ 10.3')
+    s1 = Subject.objects.create(name='Основы стандартизации')
+    s2 = Subject.objects.create(name='МДК 10.01')
+    s3 = Subject.objects.create(name='Алгоритмизация')
+    s4 = Subject.objects.create(name='Проектирование баз данных')
+    s5 = Subject.objects.create(name='МДК 11.02')
 
     User.objects.create_user(surname='Закревский', name='Эмир', patronymic='Александрович', phone='+79648686527', students_unit=my_group, password='lolita').groups.set([students])
     User.objects.create_user(surname='Баринов', name='Владислав', patronymic='Дмитриевич', phone='+79648686528', students_unit=my_group, password='lolita').groups.set([students])
@@ -55,9 +57,15 @@ def seed_users(apps, scheme_editor):
     User.objects.create_superuser(surname='Администраторов', name='Администратор', phone='+79648686553', password='lolita').groups.set([administrators])
     User.objects.create_user(surname='Майорова', name='Ольга', patronymic='Анатольевна', phone='+79648686554', password='lolita', is_staff=True).groups.set([administrators])
 
-    Appointment.objects.create(students_unit=my_group, subject=s1, teacher=t1)
-    Appointment.objects.create(students_unit=my_group, subject=s2, teacher=t2)
-    Appointment.objects.create(students_unit=my_group, subject=s3, teacher=t3)
+    Appointment.objects.create(students_unit=my_group, subject=s4, teacher=t1, course=1, is_first_term=True)
+    Appointment.objects.create(students_unit=my_group, subject=s2, teacher=t2, course=1, is_first_term=True)
+    Appointment.objects.create(students_unit=my_group, subject=s1, teacher=t3, course=1, is_first_term=False)
+    Appointment.objects.create(students_unit=my_group, subject=s2, teacher=t1, course=2, is_first_term=False)
+    Appointment.objects.create(students_unit=my_group, subject=s3, teacher=t2, course=2, is_first_term=False)
+    Appointment.objects.create(students_unit=my_group, subject=s5, teacher=t3, course=2, is_first_term=True)
+    Appointment.objects.create(students_unit=my_group, subject=s1, teacher=t1, course=3, is_first_term=True)
+    Appointment.objects.create(students_unit=my_group, subject=s4, teacher=t2, course=3, is_first_term=False)
+    Appointment.objects.create(students_unit=my_group, subject=s2, teacher=t3, course=3, is_first_term=True)
 
     for app_config in apps.get_app_configs():
         app_config.models_module = True

@@ -33,6 +33,8 @@ class Appointment(models.Model):
         verbose_name='преподаватель', limit_choices_to={'groups__name': 'Преподаватели'}
     )
     pub_date = models.DateTimeField('дата назначения', auto_now_add=True)
+    course = models.PositiveSmallIntegerField('курс')
+    is_first_term = models.BooleanField('первое полугодие?')
     
     class Meta:
         verbose_name = 'назначение преподавателя'
@@ -41,7 +43,7 @@ class Appointment(models.Model):
     def students_with_no_marks(self):
         count = 0
         for student in self.students_unit.user_set.all():
-            student_marks = student.received_marks.filter(subject=self.subject)
+            student_marks = student.received_marks.filter(appointment=self)
             if student_marks.exists():
                 int_marks = []
                 for mark in student_marks:
@@ -73,16 +75,13 @@ class Mark(models.Model):
     ]
 
     value = models.CharField('оценка', max_length=2, choices=VALUES_CHOICES)
-    subject = models.ForeignKey(Subject, on_delete=models.PROTECT, verbose_name='предмет')
-    teacher = models.ForeignKey(
-        settings.AUTH_USER_MODEL, on_delete=models.PROTECT, 
-        related_name='set_marks', verbose_name='учитель', limit_choices_to={'groups__name': 'Преподаватели'}
-    )
+    appointment = models.ForeignKey(Appointment, on_delete=models.PROTECT, verbose_name='предмет')
     student = models.ForeignKey(
         settings.AUTH_USER_MODEL, on_delete=models.PROTECT, 
         related_name='received_marks', verbose_name='студент', limit_choices_to={'groups__name': 'Студенты'}
     )
     feedback = models.TextField('обратная связь', blank=True)
+    is_final = models.BooleanField('итоговая оценка?')
     pub_date = models.DateField('дата оценивания')
 
     class Meta:
@@ -90,4 +89,4 @@ class Mark(models.Model):
         verbose_name_plural = 'оценки'
 
     def __str__(self):
-        return f'{self.value} ({self.subject}) {self.student}'.strip()
+        return f'{self.value} ({self.appointment.subject}) {self.student}'.strip()

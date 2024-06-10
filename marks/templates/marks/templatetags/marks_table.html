@@ -1,4 +1,4 @@
-{% load static average_mark date_in %}
+{% load static average_mark has_final_mark %}
 
 {% block page_styles %}
 <link rel="stylesheet" href="{% static "marks/css/marks_table.css" %}">
@@ -18,29 +18,28 @@
         </thead>
         <tbody>
             {% for student, marks in marks_map.items %}
-                <tr>
+            {% has_final_mark appointment student as h_f_m %}
+                <tr {% if h_f_m.status %}class="has-final-mark" style="--module-color: var(--{{h_f_m.mark}}-color)"{% endif %}>
                     <td>{{forloop.counter}}</td>
-                    {% if not is_student|default:False %}<td class="fullname" onclick="openMarkAddModal({{student.id}}, '{{student.get_fio}}')">
+                    {% if not is_student|default:False %}<td class="fullname" onclick="{% if not h_f_m.status %}openMarkAddModal({{student.id}}, '{{student.get_fio}}'){% endif %}">
                         <div>
                             <img class="profile-picture" src="{% if student.photo %}{{student.photo.url}}{% else %}{% static "users/imgs/default_user.png" %}{% endif %}" alt="Фото профиля">
                             <span>{{student.get_fio}}</span>
                         </div>
                     </td>{% endif %}
-                    <td>{% average_mark subject student %}</td>
+                    <td>{% average_mark appointment student %}</td>
                     {% for date in dates %}
                         <td>
                             {% for mark in marks %}
                                 {% if date == mark.pub_date %}
                                     <span 
-                                        {% if mark.value in "2345H"|make_list or is_student %}
-                                        onclick="openMarkShowModal('{{mark.value}}', {{mark.id}}, '{% if not is_student %}{{student.get_fio}}{% else %}{{mark.teacher.get_fio}}{% endif %}', '{{mark.feedback}}', '{{mark.pub_date}}')"
+                                        {% if mark.value in "2345H"|make_list or is_student or h_f_m.status %}
+                                        onclick="openMarkShowModal('{{mark.value}}', {{mark.id}}, '{% if not is_student %}{{student.get_fio}}{% else %}{{appointment.teacher.get_fio}}{% endif %}', '{{mark.feedback}}', '{{mark.pub_date}}')"
                                         {% else %}
                                         onclick="openMarkEditModal('{{mark.value}}', {{mark.id}}, '{{student.get_fio}}', '{{mark.feedback}}', '{{mark.pub_date}}')"
                                         {% endif %}
-                                        class="mark pointer{% if mark.feedback %} show-more{% endif %}" style="color: {% if mark.value in "2345"|make_list %}var(--{{mark.value}}-color){% endif %}"
-                                    >
-                                        {{mark.value}}
-                                    </span>
+                                        class="mark pointer{% if mark.feedback %} show-more{% endif %}{% if mark.is_final %} final-mark{% endif %}" style="color: {% if mark.value in "2345"|make_list %}var(--{{mark.value}}-color){% endif %}"
+                                    >{{mark.value}}</span>
                                 {% endif %}
                             {% endfor %}
                         </td>
@@ -53,16 +52,15 @@
 
 {% if not is_student %}
 <div onclick="closeModal('#add-mark-modal')" class="modal-window" id="add-mark-modal">
-    <form onclick="event.stopPropagation()" class="card" method="post" action="{% url "marks:addmark" students_unit.id subject.id %}">
+    <form onclick="event.stopPropagation()" class="card" method="post" action="{% url "marks:addmark" appointment.id %}">
         <div>
             <h2>Оценивание</h2>
             <span class="hint"></span>
         </div>
         <div class="flex">
             {% csrf_token %}
+            <input type="hidden" name="appointment" value="{{appointment.id}}">
             <input type="hidden" name="student" value="">
-            <input type="hidden" name="teacher" value="{{request.user.id}}">
-            <input type="hidden" name="subject" value="{{subject.id}}">
             <ul class="vals-list">
                 {% for val in "2345H/+."|make_list  %}
                 <li>
@@ -73,6 +71,13 @@
             </ul>
             <textarea maxlength="500" placeholder="Комментарий к оценке" name="feedback" id="feedback"></textarea>
             <input required type="date" name="pub_date" value="{% now "Y-m-d" %}" max="{% now "Y-m-d" %}">
+            <div class="is-final-checkbox" style="display: none">
+                <label for="is-final">Итоговая оценка за семестр?</label>
+                <input type="checkbox" name="is_final" id="is-final">
+            </div>
+            <div class="is-final-warning errorlist" style="display: none">
+                <span>Учитывайте, что итоговую оценку невозможно изменить</span>
+            </div>
         </div>
         <input class="button" type="submit" value="Поставить оценку">
     </form>
@@ -89,7 +94,7 @@
             <p class="feedback"></p>
             {% if not is_student %}
                 <div class="tiny-button">Изменить комментарий *</div>
-                <form style="display: none" method="post" class="card" action="{% url "marks:editmark" students_unit.id subject.id %}">
+                <form style="display: none" method="post" class="card" action="{% url "marks:editmark" appointment.id %}">
                     {% csrf_token %}
                     <input type="hidden" name="value" value="">
                     <input type="hidden" name="id" value="">
@@ -104,7 +109,7 @@
 
 {% if not is_student %}
 <div onclick="closeModal('#edit-mark-modal')" class="modal-window" id="edit-mark-modal">
-    <form onclick="event.stopPropagation()" method="post" class="card" action="{% url "marks:editmark" students_unit.id subject.id %}">
+    <form onclick="event.stopPropagation()" method="post" class="card" action="{% url "marks:editmark" appointment.id %}">
         <div>
             <h2>Редактирование</h2>
             <span class="hint"></span>
@@ -122,6 +127,13 @@
             </ul>
             <textarea maxlength="500" placeholder="Комментарий к оценке" name="feedback" class="feedback"></textarea>
             <span class="date"></span>
+            <div class="is-final-checkbox" style="display: none">
+                <label for="is-final">Итоговая оценка за семестр?</label>
+                <input type="checkbox" name="is_final" id="is-final">
+            </div>
+            <div class="is-final-warning errorlist" style="display: none">
+                <span>Учитывайте, что итоговую оценку невозможно изменить</span>
+            </div>
         </div>
         <input class="button" type="submit" value="Редактировать оценку">
     </form>
@@ -131,19 +143,20 @@
 {% block page_scripts %}
 <script src="{% static "users/js/gsap.min.js" %}"></script>
 <script>
-    document.addEventListener('DOMContentLoaded', function() {
-        const tableContainer = document.querySelector('.table-container');
-        const thead = document.querySelector('thead');
-    
-        tableContainer.addEventListener('scroll', function() {
-            thead.style.top = tableContainer.scrollTop + 'px';
+    if (!(('netscape' in window) && / rv:/.test(navigator.userAgent))) {
+        document.addEventListener('DOMContentLoaded', function() {
+            const tableContainer = document.querySelector('.table-container');
+            const thead = document.querySelector('thead');
+        
+            tableContainer.addEventListener('scroll', function() {
+                thead.style.top = tableContainer.scrollTop + 'px';
+            });
         });
-    });
+    }
 
     markAddModal = document.getElementById('add-mark-modal')
     markShowModal = document.getElementById('show-mark-modal')
     markEditModal = document.getElementById('edit-mark-modal')
-
     
     function openMarkShowModal(mark, markId, studentFio, markFeedback, markDate) {
         openModal('#show-mark-modal')
@@ -154,20 +167,86 @@
             markShowModal.querySelector("input[name='id']").value = markId 
             markShowModal.querySelector("input[name='value']").value = mark 
             markShowModal.querySelector(".edit_feedback").innerHTML = markFeedback ? markFeedback : ''
-            {% endif %}
-            markShowModal.querySelector(".hint").innerHTML = studentFio 
-            markShowModal.querySelector(".mark").innerHTML = mark 
-            markShowModal.querySelector(".mark").style = !['H', '/', '.', '+'].includes(mark) ? `color: var(--${mark}-color)` : ''
-            markShowModal.querySelector(".feedback").innerHTML = markFeedback ? markFeedback : 'Оценка без комментария'
-            markShowModal.querySelector(".date").innerHTML = markDate 
-        }
+        {% endif %}
+        markShowModal.querySelector(".hint").innerHTML = studentFio 
+        markShowModal.querySelector(".mark").innerHTML = mark 
+        markShowModal.querySelector(".mark").style = !['H', '/', '.', '+'].includes(mark) ? `color: var(--${mark}-color)` : ''
+        markShowModal.querySelector(".feedback").innerHTML = markFeedback ? markFeedback : 'Оценка без комментария'
+        markShowModal.querySelector(".date").innerHTML = markDate 
+    }
         
     {% if not is_student %}
+        isFinalCheckboxAdd = markAddModal.querySelector('.is-final-checkbox')
+        isFinalCheckboxAddInput = markAddModal.querySelector('.is-final-checkbox input')
+        isFinalWarningAdd = markAddModal.querySelector('.is-final-warning')
+
+        markAddModal.querySelectorAll('.vals-list input').forEach((input) => {
+            if ([2, 3, 4, 5].includes(parseInt(input.value, 10))) {
+                input.addEventListener('click', () => {
+                    if (isFinalCheckboxAdd.style.display != 'flex') {
+                        isFinalCheckboxAdd.style.display = 'flex'
+                    }
+                    isFinalCheckboxAddInput.checked = false
+                    isFinalWarningAdd.style.display = 'none'
+                })
+            } else {
+                input.addEventListener('click', () => {
+                    if (isFinalCheckboxAdd.style.display != 'none') {
+                        isFinalCheckboxAddInput.checked = false
+                        isFinalCheckboxAdd.style.display = 'none'
+                        isFinalWarningAdd.style.display = 'none'
+                    }
+                })
+            }
+        })
+
+        isFinalCheckboxAddInput.addEventListener('change', () => {
+            if (isFinalCheckboxAddInput.checked) {
+                isFinalWarningAdd.style.display = 'block'
+            } else {
+                isFinalWarningAdd.style.display = 'none'
+            }
+        })
+
         function openMarkAddModal(studentId, studentFio) {
             openModal('#add-mark-modal')
             markAddModal.querySelector("input[name='student']").value = studentId 
             markAddModal.querySelector(".hint").innerHTML = studentFio 
+            markAddModal.querySelector(".is-final-checkbox input").checked = false
+            isFinalCheckbox.style.display = 'none'
         }
+
+        isFinalCheckboxEdit = markEditModal.querySelector('.is-final-checkbox')
+        isFinalCheckboxEditInput = markEditModal.querySelector('.is-final-checkbox input')
+        isFinalWarningEdit = markEditModal.querySelector('.is-final-warning')
+
+        markEditModal.querySelectorAll('.vals-list input').forEach((input) => {
+            if ([2, 3, 4, 5].includes(parseInt(input.value, 10))) {
+                input.addEventListener('click', () => {
+                    if (isFinalCheckboxEdit.style.display != 'flex') {
+                        isFinalCheckboxEdit.style.display = 'flex'
+                    }
+                    isFinalCheckboxEditInput.checked = false
+                    isFinalWarningEdit.style.display = 'none'
+                })
+            } else {
+                input.addEventListener('click', () => {
+                    if (isFinalCheckboxEdit.style.display != 'none') {
+                        isFinalCheckboxEditInput.checked = false
+                        isFinalCheckboxEdit.style.display = 'none'
+                        isFinalWarningEdit.style.display = 'none'
+                    }
+                })
+            }
+        })
+
+        isFinalCheckboxEditInput.addEventListener('change', () => {
+            if (isFinalCheckboxEditInput.checked) {
+                isFinalWarningEdit.style.display = 'block'
+            } else {
+                isFinalWarningEdit.style.display = 'none'
+            }
+        })
 
         function openMarkEditModal(mark, markId, studentFio, markFeedback, markDate) {
             openModal('#edit-mark-modal')
@@ -179,6 +258,9 @@
             markEditModal.querySelectorAll("input[name='value']").forEach((el) => {
                 if (el.value == mark) {
                     el.checked = true
+                    isFinalWarningEdit.style.display = 'none'
+                    isFinalCheckboxEditInput.checked = false
+                    isFinalCheckboxEdit.style.display = 'none'
                 }
             })
         }

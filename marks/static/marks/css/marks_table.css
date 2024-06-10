@@ -9,6 +9,7 @@ table td:nth-child(3) {
 }
 table thead {
   position: sticky;
+  top: 0;
   z-index: 2;
 }
 table.student-table td:nth-child(3) {
@@ -120,6 +121,37 @@ table.student-table td:nth-child(2) {
 }
 #show-mark-modal textarea {
   height: 100px;
+}
+
+.is-final-checkbox {
+  display: flex;
+  width: fit-content;
+  margin-inline: auto;
+  column-gap: 10px;
+  align-items: center;
+}
+.is-final-checkbox input {
+  width: 20px;
+  height: 20px;
+}
+
+.has-final-mark td:first-child {
+  position: relative;
+}
+.has-final-mark td:first-child::before {
+  content: "";
+  width: 10px;
+  height: 100%;
+  position: absolute;
+  left: 0;
+  top: 0;
+  background-color: var(--module-color);
+}
+.has-final-mark .fullname {
+  cursor: auto;
+}
+.has-final-mark .fullname:hover {
+  color: var(--text-color);
 }
 
 @media screen and (max-width: 500px) {
