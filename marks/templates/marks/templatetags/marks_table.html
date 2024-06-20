@@ -213,7 +213,12 @@
             markAddModal.querySelector("input[name='student']").value = studentId 
             markAddModal.querySelector(".hint").innerHTML = studentFio 
             markAddModal.querySelector(".is-final-checkbox input").checked = false
-            isFinalCheckbox.style.display = 'none'
+            isFinalCheckboxAdd.style.display = 'none'
+            isFinalWarningAdd.style.display = 'none'
+
+            markAddModal.querySelectorAll("input[name='value']").forEach((el) => {
+                el.checked = false
+            })
         }
 
         isFinalCheckboxEdit = markEditModal.querySelector('.is-final-checkbox')
